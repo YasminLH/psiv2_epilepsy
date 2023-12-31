@@ -16,10 +16,13 @@ En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg
 
 ## OBJECTIUS
 
-L'objectiu d'aquest treball és veure si podem veure si una persona està tenint un atac o no d'epilepsia, per tal de saber si tenim els recursos i la capcitat per determinar que una persona està patint un atac amb els senyals cerebrals.
-També tenim com a objectiu tractar el gran desequilibri de les dades ja que per cada pacient hi han una gran quantitat de finestres on les persones no estan rebent un atac epilepsia i molt poques on si s'ha esta patint un atac. S'ha de tractar el dataset per equilibrar les dades o fer que aquest desequilibri no afecti al model.
-Com hi ha diferetns maneres de definir que és  train o test és a dir que podem fer un train i test segons el pacients, finestres o  atacs d'epilepsia.Creant aixì com objectiu fer un model complert que defineixi millor quines són les metriques i com s'evaluarà el model perquè els resultats tinguin pes per prendre decisions. Complir amb aquests objectius en l'ambit médic és molt important ja que hi ha vides en joc i la presa d'una mala desició per una erronea interpretació del model pot ser molt costós pels pacients. Fent que hi hagi una base per aplicacions futeres médiques erronea perjudicant a principalment als pacients. 
 
+L'objectiu d'aquest treball és captar si una persona està tenint un atac o no d'epilèpsia i poder classificar-lo, basant-nos en els senyals cerebrals.
+
+També tenim com a objectiu tractar el gran desequilibri de les dades, ja que a la base de dades hi ha una gran quantitat de finestres sense presència d'epilèpsia i poques amb presència. S'ha de tractar el dataset per equilibrar les dades o fer que aquest desequilibri no afecti l'aprenentatge del model i que no quedi esbiaixat.
+
+Per altra banda, tenim com a objectiu definir bé quines són les mètriques que volem usar, i com s'avaluarà el model, per tal que, els resultats tinguin pes per prendre decisions.
+Complir amb aquests objectius en l'àmbit mèdic és molt important, ja que hi ha vides en joc i la presa d'una mala decisió per una errònia interpretació del model pot ser molt costós pels pacients.
 
 ## BASE DE DADES 
 La base de dades consisteix de 24 pacients on per cada pacient hi ha varies hores de senyals EEG les sigles EEG corresponen a "Electroencefalograma". L'EEG és una tècnica de neuroimatge que mesura l'activitat elèctrica del cervell. Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir cabellut. On hi ha moments on la persona està patint un atac d'epilepsia. Cada pacient té el format d'emmagatzematge Parquet format que és un format de fitxer d'emmagatzematge columnar altament optimitzat per utilitzar-se amb marcs de processament de dades massives. S'utilitza habitualment en el context de l'emmagatzematge i el processament eficient de conjunts de dades grans. A aquesta base de dades ha estat tractada de la següent manera hem fet un subsampling de per pacient on per cada pacient hem agafat la mateixa quantitat de dades per les diferetns clases y aixì poder fer un entrenament amb les dades equilibrades.
@@ -31,7 +34,9 @@ El GitHub l'hem distribuït de la següent manera:
     (cunado acabemos todos los cambios de dsitribucon i carpetas lo ponemos)
 
 ## PROCEDIMENT
+
 ### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
 
 
 L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució apren a identificar característiques específiques de l'entrada, mentre que les capes de max pooling redueixen progressivament les dimensions espacials, contribuint a crear una representació comprimida de la imatge original. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un autoencoder desviat, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
