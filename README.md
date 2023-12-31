@@ -17,7 +17,7 @@ Com hi ha diferetns maneres de definir que és  train o test és a dir que podem
 
 
 ## BASE DE DADES 
-
+La base de dades consisteix de 24 pacients on per cada pacient hi ha varies hores de senyals EEG les sigles EEG corresponen a "Electroencefalograma". L'EEG és una tècnica de neuroimatge que mesura l'activitat elèctrica del cervell. Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir cabellut. On hi ha moments on la persona està patint un atac d'epilepsia. Cada pacient té el format d'emmagatzematge Parquet format que és un format de fitxer d'emmagatzematge columnar altament optimitzat per utilitzar-se amb marcs de processament de dades massives. S'utilitza habitualment en el context de l'emmagatzematge i el processament eficient de conjunts de dades grans. A aquesta base de dades ha estat tractada de la següent manera hem fet un subsampling de per pacient on per cada pacient hem agafat la mateixa quantitat de dades per les diferetns clases y aixì poder fer un entrenament amb les dades equilibrades.
 
 ## DISTRIBUCIÓ
 
