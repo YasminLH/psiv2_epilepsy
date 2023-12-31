@@ -21,6 +21,9 @@ La base de dades consisteix de 24 pacients on per cada pacient hi ha varies hore
 
 ## DISTRIBUCIÓ
 
+El GitHub l'hem distribuït de la següent manera:
+
+    (cunado acabemos todos los cambios de dsitribucon i carpetas lo ponemos)
 
 ## PROCEDIMENT
 
