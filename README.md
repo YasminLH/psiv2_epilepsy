@@ -25,7 +25,12 @@ Per altra banda, tenim com a objectiu definir bé quines són les mètriques que
 Complir amb aquests objectius en l'àmbit mèdic és molt important, ja que hi ha vides en joc i la presa d'una mala decisió per una errònia interpretació del model pot ser molt costós pels pacients.
 
 ## BASE DE DADES 
-La base de dades consisteix de 24 pacients on per cada pacient hi ha varies hores de senyals EEG les sigles EEG corresponen a "Electroencefalograma". L'EEG és una tècnica de neuroimatge que mesura l'activitat elèctrica del cervell. Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir cabellut. On hi ha moments on la persona està patint un atac d'epilepsia. Cada pacient té el format d'emmagatzematge Parquet format que és un format de fitxer d'emmagatzematge columnar altament optimitzat per utilitzar-se amb marcs de processament de dades massives. S'utilitza habitualment en el context de l'emmagatzematge i el processament eficient de conjunts de dades grans. A aquesta base de dades ha estat tractada de la següent manera hem fet un subsampling de per pacient on per cada pacient hem agafat la mateixa quantitat de dades per les diferetns clases y aixì poder fer un entrenament amb les dades equilibrades.
+La base de dades consisteix en 24 pacients on per cadascun hi ha diverses hores de senyals EEG, les sigles EEG corresponen a "Electroencefalograma". L'EEG és una tècnica de neuroimatge que mesura l'activitat elèctrica del cervell.
+
+Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir cabellut. Cada pacient té el format d'emmagatzematge Parquet, que és un format de fitxer d'emmagatzematge columnar altament optimitzat per usar-se amb marcs de processament de dades massives. Es fa servir habitualment en el context de l'emmagatzematge i el processament eficient de conjunts de dades grans.
+
+Aquesta base de dades ha estat tractada de la següent manera:
+Hem fet un subsampling per pacient; per cada pacient hem agafat la mateixa quantitat de dades per les diferents classes i així poder fer un entrenament amb les dades equilibrades.
 
 ## DISTRIBUCIÓ
 
@@ -36,6 +41,8 @@ El GitHub l'hem distribuït de la següent manera:
 ## PROCEDIMENT
 
 ### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
+
+Ens hem basat en la següent estructura.
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
 
 
