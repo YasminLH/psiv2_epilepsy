@@ -26,10 +26,9 @@ El GitHub l'hem distribuït de la següent manera:
     (cunado acabemos todos los cambios de dsitribucon i carpetas lo ponemos)
 
 ## PROCEDIMENT
-
-
 ### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
 
+Aquesta part consisteix en la creació del encoder per poder fer la clasificació, abans de pasar les dades per les capes del encoder fusionarem els diferetns canals del senyal EEG que té cada finiestra perquè le model pogui aprendre. 
 
 ### LSTM
 
