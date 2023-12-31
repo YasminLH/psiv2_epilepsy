@@ -33,7 +33,14 @@ El GitHub l'hem distribuït de la següent manera:
 ## PROCEDIMENT
 ### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
 
-Aquesta part consisteix en la creació del encoder per poder fer la clasificació, abans de pasar les dades per les capes del encoder fusionarem els diferetns canals del senyal EEG que té cada finiestra perquè le model pogui aprendre. 
+
+L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució apren a identificar característiques específiques de l'entrada, mentre que les capes de max pooling redueixen progressivament les dimensions espacials, contribuint a crear una representació comprimida de la imatge original. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un autoencoder desviat, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
+
+
+
+
+
+
 
 ### LSTM
 
