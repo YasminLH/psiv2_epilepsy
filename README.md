@@ -11,6 +11,10 @@ En canvi la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg 
 
 ## OBJECTIUS
 
+L'objectiu d'aquest treball és veure si podem veure si una persona està tenint un atac o no d'epilepsia, per tal de saber si tenim els recursos i la capcitat per determinar que una persona està patint un atac amb els senyals cerebrals.
+També tenim com a objectiu tractar el gran desequilibri de les dades ja que per cada pacient hi han una gran quantitat de finestres on les persones no estan rebent un atac epilepsia i molt poques on si s'ha esta patint un atac. S'ha de tractar el dataset per equilibrar les dades o fer que aquest desequilibri no afecti al model.
+Com hi ha diferetns maneres de definir que és  train o test és a dir que podem fer un train i test segons el pacients, finestres o  atacs d'epilepsia.Creant aixì com objectiu fer un model complert que defineixi millor quines són les metriques i com s'evaluarà el model perquè els resultats tinguin pes per prendre decisions. Complir amb aquests objectius en l'ambit médic és molt important ja que hi ha vides en joc i la presa d'una mala desició per una erronea interpretació del model pot ser molt costós pels pacients. Fent que hi hagi una base per aplicacions futeres médiques erronea perjudicant a principalment als pacients. 
+
 
 ## BASE DE DADES 
 
