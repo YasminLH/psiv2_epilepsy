@@ -48,8 +48,38 @@ Ens hem basat en la següent estructura.
 
 L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució apren a identificar característiques específiques de l'entrada, mentre que les capes de max pooling redueixen progressivament les dimensions espacials, contribuint a crear una representació comprimida de la imatge original. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un autoencoder desviat, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
 
+La xarxa conte la següent estructura:
+
+    - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D: ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (32, 64, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (64, 128, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (128, 256, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool ((1,2), stride=(1,2), padding=(0,1))
 
 
+Les dades es fa amb la següents capes:
+
+    Convolucional - 2D (21,1,(1,1)
+    ReLu
+    AdaptiveAvgPool2d ((256,4))
+    Flatten()
+
+
+####Paràmetres
+
+    Els que he utlitzat en l'encoder han estat els següents:
+        
+    Èpoques: 300
+    Optmimizer: Adamax
+    lr: 0'001
+    Criterion: BCEWithLogitsLoss
 
 
 
