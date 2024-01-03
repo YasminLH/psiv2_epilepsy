@@ -72,7 +72,7 @@ Les dades es fa amb la següents capes:
     Flatten()
 
 
-####Paràmetres
+#### Paràmetres
 
     Els que he utlitzat en l'encoder han estat els següents:
         
