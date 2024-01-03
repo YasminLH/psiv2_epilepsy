@@ -52,6 +52,7 @@ La raó d'aquesta elecció ha estat perquè així podiem reutilitzar el codi de 
 L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució aprèn a identificar patrons específics i únics de l'entrada, fent que la finestra de convolució vagi píxel a píxel i que la mida segueixi la mateixa. 
 Seguidament s'apliquen les funcions d'activacions "ReLU" per tal d'introduir no linealitat a la xarxa. Per últim es realitza l'operació que redueix progressivament les dimensions espacials, contribuint a crear un ouput més precís per tal de poder fer una classificació acurada. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un encoder precís i robust, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
 
+### explicar el data loader --> por finestra
 La xarxa conte la següent estructura:
 
     - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
@@ -68,17 +69,18 @@ La xarxa conte la següent estructura:
     - MaxPool ((1,2), stride=(1,2), padding=(0,1))
 
 
-Les dades es fa amb la següents capes:
+Les capes per fer la fusió de cracaterístiques tenen la següent estructura:
 
     Convolucional - 2D (21,1,(1,1)
     ReLu
     AdaptiveAvgPool2d ((256,4))
     Flatten()
 
+La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
 
 #### Paràmetres
 
-    Els que he utlitzat en l'encoder han estat els següents:
+    Els paràmetres utilitzats per tal d'arribra a un resultat robust i coherent han estat els següents:
         
     Èpoques: 300
     Optmimizer: Adamax
@@ -87,10 +89,10 @@ Les dades es fa amb la següents capes:
 
 
 
-
+### poner las otras versiones por paciente 
 ### LSTM
 
-Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependencies a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons secuencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüencia que o patró alhora d'obtenir l'atac el dectarem amb LSTM. 
+Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM. 
 
 La xarxa conte la següent estructura:
     pner estructura cambiada si no se pone la del encoder
