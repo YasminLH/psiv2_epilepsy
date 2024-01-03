@@ -44,11 +44,13 @@ El GitHub l'hem distribuït de la següent manera:
 
 ### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
 
-Ens hem basat en la següent estructura.
+Ens hem basat en la següent estructura per fer la xarxa neuronal.
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
 
+La raó d'aquesta elecció ha estat perquè així podiem reutilitzar el codi de l'anterior repte, així doncs l'únic canvi significatiu que hem fet ha estat afegir un data fusion unit a la sortida de l'encoder i fer que l'entrada de l'encoder sigui un canal en comptes dels 16 a la vegada.  
 
-L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució apren a identificar característiques específiques de l'entrada, mentre que les capes de max pooling redueixen progressivament les dimensions espacials, contribuint a crear una representació comprimida de la imatge original. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un autoencoder desviat, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
+L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució aprèn a identificar patrons específics i únics de l'entrada, fent que la finestra de convolució vagi píxel a píxel i que la mida segueixi la mateixa. 
+Seguidament s'apliquen les funcions d'activacions "ReLU" per tal d'introduir no linealitat a la xarxa. Per últim es realitza l'operació que redueix progressivament les dimensions espacials, contribuint a crear un ouput més precís per tal de poder fer una classificació acurada. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un encoder precís i robust, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
 
 La xarxa conte la següent estructura:
 
