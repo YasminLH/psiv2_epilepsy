@@ -86,6 +86,23 @@ Les dades es fa amb la següents capes:
 
 ### LSTM
 
+Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependencies a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons secuencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüencia que o patró alhora d'obtenir l'atac el dectarem amb LSTM. 
+
+La xarxa conte la següent estructura:
+    pner estructura cambiada si no se pone la del encoder
+
+    - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D: ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (32, 64, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (64, 128, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (128, 256, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool ((1,2), stride=(1,2), padding=(0,1))
 
 ## RESULTATS
 
