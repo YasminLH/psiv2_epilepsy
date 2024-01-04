@@ -49,8 +49,12 @@ Ens hem basat en la següent estructura per fer la xarxa neuronal.
 
 La raó d'aquesta elecció ha estat perquè així podiem reutilitzar el codi de l'anterior repte, així doncs l'únic canvi significatiu que hem fet ha estat afegir un data fusion unit a la sortida de l'encoder i fer que l'entrada de l'encoder sigui un canal en comptes dels 16 a la vegada.  
 
-L'encoder té la responsabilitat de transformar la imatge original en una versió de baixa dimensionalitat. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució aprèn a identificar patrons específics i únics de l'entrada, fent que la finestra de convolució vagi píxel a píxel i que la mida segueixi la mateixa. 
-Seguidament s'apliquen les funcions d'activacions "ReLU" per tal d'introduir no linealitat a la xarxa. Per últim es realitza l'operació que redueix progressivament les dimensions espacials, contribuint a crear un ouput més precís per tal de poder fer una classificació acurada. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents a les imatges. Per assegurar-nos d'un encoder precís i robust, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
+
+
+L'encoder és responsable de transformar la entrada en una representació que pugui ser utilitzada per la resta del model per realitzar tasques especifiques, en el nostre cas és la classificació de si una persona està rebent o no un atac d'epilepsia. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució aprèn a extreure les carecteristiques necessaries per poder identificar les persones que tenen un atac. Després de que la secuencia del senyal pasin per encoder crea un embedding amb carecteritiques de la secuencia espacial del senyal del cervell. Que permet fer una clasificació. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents al senyal. Per assegurar-nos d'un encoder precís i robust, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride). Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
+
+
+
 
 ### explicar el data loader --> por finestra
 La xarxa conte la següent estructura:
@@ -87,6 +91,8 @@ La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, segui
     lr: 0'001
     Criterion: BCEWithLogitsLoss
 
+
+- BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binaria entre les probabilitats d'entrada i de la sortida.
 
 
 ### poner las otras versiones por paciente 
