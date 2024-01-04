@@ -56,7 +56,10 @@ L'encoder és responsable de transformar la entrada en una representació que pu
 
 
 
-### explicar el data loader --> por finestra
+### explicar el data loader --> por finestra adan: no entien bien que es esto
+
+El dataloader que hem utilitzat per entrenar el nostre model d'autoencoders és un conjunt de finestres, representen 1 segon de visualització del senyal del cervell. El model transforma aquesta finestra en un embedding on extreu les carecteristiques en un tipus de dades. S'han agafat de manera blanzajada entre les dues classes per evitar que el nostre model de classifiació quedi esbiaxat cap a una classe.
+
 
 
 
