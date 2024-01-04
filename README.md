@@ -57,6 +57,9 @@ L'encoder és responsable de transformar la entrada en una representació que pu
 
 
 ### explicar el data loader --> por finestra
+
+
+
 La xarxa conte la següent estructura:
 
     - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
