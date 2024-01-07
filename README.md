@@ -56,12 +56,9 @@ L'encoder és responsable de transformar la entrada en una representació que pu
 
 
 
-### explicar el data loader --> por finestra adan: no entien bien que es esto
 
-Dataloader:
-Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. 
-
--- revisar el dataloader.
+## Dataloader:
+Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model.
 
 La xarxa conte la següent estructura:
 
