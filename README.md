@@ -58,10 +58,10 @@ L'encoder és responsable de transformar la entrada en una representació que pu
 
 ### explicar el data loader --> por finestra adan: no entien bien que es esto
 
-El dataloader que hem utilitzat per entrenar el nostre model d'autoencoders és un conjunt de finestres, representen 1 segon de visualització del senyal del cervell. El model transforma aquesta finestra en un embedding on extreu les carecteristiques en un tipus de dades. S'han agafat de manera blanzajada entre les dues classes per evitar que el nostre model de classifiació quedi esbiaxat cap a una classe.
+Dataloader:
+Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. 
 
-
-
+-- revisar el dataloader.
 
 La xarxa conte la següent estructura:
 
