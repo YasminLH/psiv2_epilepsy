@@ -65,25 +65,23 @@ Per carregar les nostres dades utlitzem un document que podem carregar en un dat
 
 La xarxa conte la següent estructura:
 
-    - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
+    - Convolucional - 2D(1, 128, (1,3), stride=1, padding=(0,1))
     - ReLu
     - MaxPool - 2D: ((1,2), stride=(1,2), padding=(0,1))
-    - Convolucional - 2D (32, 64, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
-    - Convolucional - 2D (64, 128, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
     - Convolucional - 2D (128, 256, (1,3), stride=1, padding=(0,1))
     - ReLu
-    - MaxPool ((1,2), stride=(1,2), padding=(0,1))
-
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    - Convolucional - 2D (256, 512, (1,3), stride=1, padding=(0,1))
+    - ReLu
+    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
+    
 
 Les capes per fer la fusió de cracaterístiques tenen la següent estructura:
 
     Convolucional - 2D (21,1,(1,1)
     ReLu
     AdaptiveAvgPool2d ((256,4))
+    Dropout: 0.5
     Flatten()
 
 La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
