@@ -58,7 +58,10 @@ L'encoder és responsable de transformar la entrada en una representació que pu
 
 
 ## Dataloader:
-Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model.
+Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model. 
+Seguint el que hem dit anteriorment del dataloader hem fet dos dataloaders que un consisteix en separar per finestres sense agruparles per pacient per entreanr el nostre model és a dir que a qui pertany les finestres no té importancia. Per cada classe hi ha 2000 finestres. En canvi l'altre dataloader entrena per pacient per tan per cada pacient agrupem les seves finestres correponents on hi han atacs o no d'epilepsia i fem l'entrenament tenint en compte aquesta agrupació per entreanar el nostre model. Per cada pacient s'afageix la mateixa quantitat de finestres que siguin atac i que no ho siguin per aixì sigui un dataloader balancejat. De cada classe hi ha 450 finestres. 
+
+----- que pasa en la separacion de interva?
 
 La xarxa conte la següent estructura:
 
@@ -87,10 +90,11 @@ La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, segui
 
     Els paràmetres utilitzats per tal d'arribra a un resultat robust i coherent han estat els següents:
         
-    Èpoques: 300
+    Èpoques: 30
     Optmimizer: Adamax
     lr: 0'001
     Criterion: BCEWithLogitsLoss
+    dropout = 0.5
 
 
 - BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binaria entre les probabilitats d'entrada i de la sortida.
@@ -102,20 +106,12 @@ La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, segui
 Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM. 
 
 La xarxa conte la següent estructura:
-    pner estructura cambiada si no se pone la del encoder
-
-    - Convolucional - 2D(1, 32, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool - 2D: ((1,2), stride=(1,2), padding=(0,1))
-    - Convolucional - 2D (32, 64, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
-    - Convolucional - 2D (64, 128, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
-    - Convolucional - 2D (128, 256, (1,3), stride=1, padding=(0,1))
-    - ReLu
-    - MaxPool ((1,2), stride=(1,2), padding=(0,1))
+        input_dim = 21
+        hidden_dim =  20
+        output_dim = 2
+        num_layers = 2
+        batch_size = 3
+  
 
 ## RESULTATS
 
