@@ -3,23 +3,31 @@
 
 ## INTRODUCCIÓ
 
-Analitzarem diferents senyals cerebrals, per tal d'entrenar un model d'intel·ligència artificial que pugui detectar si, una persona està patint o no un atac d'epilèpsia, per tal de poder classificar quan una persona rep o no un atac s'utilitzaran finestres.
+Analitzarem diferents senyals cerebrals, per tal d'entrenar un model d'intel·ligència artificial que pugui detectar si, una persona està patint o no un atac d'epilèpsia, per tal de poder classificar quan una persona rep o no un atac s'utilitzaran 4 nivells: les finestres com a nivell més baix, els intervals, recordings i pacients respectivament.
+
 Les finestres són un grup de mostres de senyals en el temps d'un pacient en concret, i estan etiquetades amb "no té epilèpsia" i "té epilèpsia". Aquestes finestres etiquetades s'hauran de tractar perquè l'espai de temps que representa es pugui tractar com un únic senyal i no com un conjunt de senyals i així poder entrenar el model.
 L'ordre del senyal té importàncies, ja que un conjunt de finestres d'un mateix pacient són contínues en el mateix temps. La nostra xarxa ha d'aprendre del passat, pel fet que per una mateixa finestra té diferents senyals que tenen un ordre temporal. Un senyal del passat influeix en els senyals següents. 
 
-Primer hem decidit usar encoders per fer la classificació de finestres, ja que és més simple i podem veure si la part de tractament d'imatge i creació de finestres és correcte i a més a més, comprovem que la IA pugui entrenar del nostre model. Un cop realitzat aquest procés, passarem l'output, com a input a la xarxa LSTM i ens quedarem amb el model que millors resultats tingui. 
+Els intervals és un nivell una mica més genèric, en el que és té un altre enfoc, ja que cada interval és un conjunt de finestres que estan enregistrades en diferents moments, però el mateix dia. 
+En canvi el nivell recording és el mateix que l'interval, però en diferents dies. 
+Per útlim, tenim els pacients que és el nivell més genèric que hi ha, i que consisteix en tractar tots els recordings d'un pacient a la vegada. 
 
+Procedimentalment, hem decidit tenir dos enfocs, el de l'encoder i l'LSTM.
 L'encoder canviarà l'embedding de característiques del senyal rebut per poder extreure les característiques d'una manera en la qual siguin més fàcils de classificar i poder diferenciar entre les diferents classes que rep el model.
 
 En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg termini, ja que les RNN tradicionals sempre tenen problemes amb el gradient amb seqüències llargues. LSTM té l’habilitat de posseir cel·les amb memòria, és a dir, cel·les que estan regulades per cel·les que controlen la informació que surt i entra, fent així que la xarxa pugui oblidar informació de poca importància i mantenint tota aquella informació que aporta i permet aprendre i millorar el model.
+
+Aixi doncs, primer de tot hem decidit usar encoders per fer la classificació de tots 4 nivells, ja que és més simple i com a primer apropament del problema, està bé, ja que pot ser molt efectiu a l'hora de la detecció de patrons complexes a les dades. Un cop realitzat aquest procés, farem el mateix pas, però amb una xarxa LSTM i en tots dos casos ens quedarem amb el model que millor accuracy tingui, ja que utilitzem el fenòmen KFold.
+
 
 
 ## OBJECTIUS
 
 
 L'objectiu d'aquest treball és captar si una persona està tenint un atac o no d'epilèpsia i poder classificar-lo, basant-nos en els senyals cerebrals.
+Un altre objectiu bastant important, és classificar amb els diferents nivells i comparar quin és el millor d'ells.
 
-També tenim com a objectiu tractar el gran desequilibri de les dades, ja que a la base de dades hi ha una gran quantitat de finestres sense presència d'epilèpsia i poques amb presència. S'ha de tractar el dataset per equilibrar les dades o fer que aquest desequilibri no afecti l'aprenentatge del model i que no quedi esbiaixat.
+També tenim com a objectiu tractar el gran desequilibri de les dades, ja que a la base de dades hi ha una gran quantitat de finestres, recordings i intervals sense presència d'epilèpsia i poques amb presència. S'ha de tractar el dataset per equilibrar les dades o fer que aquest desequilibri no afecti l'aprenentatge del model i que no quedi esbiaixat.
 
 Per altra banda, tenim com a objectiu definir bé quines són les mètriques que volem usar, i com s'avaluarà el model, per tal que, els resultats tinguin pes per prendre decisions.
 Complir amb aquests objectius en l'àmbit mèdic és molt important, ja que hi ha vides en joc i la presa d'una mala decisió per una errònia interpretació del model pot ser molt costós pels pacients.
@@ -37,8 +45,10 @@ Hem fet un subsampling per pacient; per cada pacient hem agafat la mateixa quant
 ## DISTRIBUCIÓ
 
 El GitHub l'hem distribuït de la següent manera:
+- codi.py: codi en python que conté el codi d'aquesta pràctica, tant el de LSTM com el de l'Encoder. 
+- Losses: directori que conté les gràfiques de les losses
+- Pickle.py: fitxter python que conté el codi on es generen les gràfiques de loss del train i test.
 
-    (cunado acabemos todos los cambios de dsitribucon i carpetas lo ponemos)
 
 ## PROCEDIMENT
 
@@ -113,6 +123,19 @@ La xarxa conte la següent estructura:
         batch_size = 3
   
 
+## CODI:
+Per executar els diferents casos, tenim opcions que comentem i descomentem, és a dir, si vols que s'executi el LSTM amb el nivell recording, deixas decomnetat la "tipus" LSTM i la "divisio" recoring.
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/8054e2fa-9e75-4862-8694-18a23ff47319)
+Això sí sempre tenint en compte, que per cada cas té un número òptim d'èpoques i això s'ha de respectar, per tant, es canvia també el número d'èpoques.
+- encoder window --> 30 epocas 
+- encoder interval -->10 epocas 
+- encoder pacient --> 14 epocas 
+- encoder recording --> 6 epocas
+
+- lstm  window --> 15 epocas 
+- lstm  interval -->10 epocas  
+- lstm  pacient --> 15 epocas  
+- lstm  recording --> 6 epocas
 ## RESULTATS
 
 
