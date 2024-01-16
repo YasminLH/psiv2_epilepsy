@@ -42,7 +42,7 @@ El GitHub l'hem distribuït de la següent manera:
 
 ## PROCEDIMENT
 
-### XARXA NEURONAL: ENCODER I CLASSIFICACIÓ
+### XARXA NEURONAL: ENCODER I LSTM
 
 Ens hem basat en la següent estructura per fer la xarxa neuronal.
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
