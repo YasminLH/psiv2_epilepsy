@@ -34,23 +34,23 @@ Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir 
 
 Aquesta base de dades es troba de la següent manera:
 
--24 arxius en format .npz, un per cada pacient, que contenen les dades de les pròpies senyals. Cada arxiu és per tant un array amb format (numero de finestres, canals, temps). El nombre de finestres varia per cada pacient. Cada finestra té 21 canals i cada finestra està dividida en trossets de 128 temporalment. Cada finestra correspon a un segon de recording. Per tant, tenim les finestres dividides en 21 canals i 1/128 segons.
+- 24 arxius en format .npz, un per cada pacient, que contenen les dades de les pròpies senyals. Cada arxiu és per tant un array amb format (numero de finestres, canals, temps). El nombre de finestres varia per cada pacient. Cada finestra té 21 canals i cada finestra està dividida en trossets de 128 temporalment. Cada finestra correspon a un segon de recording. Per tant, tenim les finestres dividides en 21 canals i 1/128 segons.
 
--24 arxius en fomat .parquet, un per cada pacient, que contenen les metadades de cada una de les finestres. Cada arxiu es tracta per tant d'un Dataframe on cada fila representa una finestra. Conte la classe, l'interval, el recording i el pacient al qual pertany cada finestra.
+- 24 arxius en fomat .parquet, un per cada pacient, que contenen les metadades de cada una de les finestres. Cada arxiu es tracta per tant d'un Dataframe on cada fila representa una finestra. Conte la classe, l'interval, el recording i el pacient al qual pertany cada finestra.
 Els dos arxius es troben relacionat pel propi índex. És a dir, la primera entrada de l'array coincideix amb la primera entrada del Dataframe.
 
 En total tenim 571905 finestres. Aquest és un nombre molt elevat de dades i si volguéssim utilitzar-les totes necessitaríem 200 GB de memòria ram aproximadament.
 Aquestes finestres no es troben balancejades en cap de les formes. És a dir:
 
--Hi ha més dades negatives, sense epilèpsia, que positives. Un 84% de les dades són negatives.
+- Hi ha més dades negatives, sense epilèpsia, que positives. Un 84% de les dades són negatives.
 
--Els pacients no tenen tots el mateix nombre de recordings.
+- Els pacients no tenen tots el mateix nombre de recordings.
 
--Els pacients no tenen tots el mateix nombre d'intervals.
+- Els pacients no tenen tots el mateix nombre d'intervals.
 
--Els intervals no tenen tots el mateix nombre de finestres.
+- Els intervals no tenen tots el mateix nombre de finestres.
 
--La distribució de les classes és diferent per cada una de les divisions. En un interval podem trobar un 90% de dades negatives i en un altre un 70%.
+- La distribució de les classes és diferent per cada una de les divisions. En un interval podem trobar un 90% de dades negatives i en un altre un 70%.
 
 Tot això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall posteriorment però bàsicament per evitar problemes
 hem fet un subsampling per pacient. Per cada pacient hem agafat la mateixa quantitat de dades per les diferents classes i així poder fer un entrenament amb les dades equilibrades.
@@ -74,13 +74,13 @@ El GitHub l'hem distribuït de la següent manera:
 Com ja s'ha mencionat abans la càrrega de dades no és trivial, ja que no totes les dades caben a memòria ram. Per tant la solució és fer un subsampling. La càrrega de dades és diferent per cada una de les 4 divisions que fem: per finestres, per intervals, per recordings i per pacients.
 Totes per això tenen un element en comú, el tractament arxiu a arxiu amb un bucle *for*. Carreguem un arxiu, el tractem balancejant i/o fent la divisió train test, guardem les dades en format X (N,21,128) i Y(N) i passem al seguennt arxiu. Al final ens queden 4 llistes: Xtrain, Xtest, Ytrain, Ytest. Les X contenen les dades com a tal i la Y conte la classe. Per treballar el que fem és primer carregar el dataframe, treballar amb l'índexs d'aquests i per últim amb el índex resultant final carreguem les dades .npz.
 
--Window: Aquesta és la divisió més simple i més fàcil. Dintre del bucle per a cada arxiu carreguem un nombre de les dades de l'arxiu .npz i el mateix nombre d'etiquetes. En aquest cas del dataframe només utilitzem la columna de la classe per treure les etiquetes i per mirar que estem agafant el mateix nombre de les dues classes. Un cop ja hem recorregut els arxius i tenim les dades en dues llistes X i Y passem a dividir-les. Utilitzem la funció train_test_split de la llibreria sklearn i ja ho tenim.
+- Window: Aquesta és la divisió més simple i més fàcil. Dintre del bucle per a cada arxiu carreguem un nombre de les dades de l'arxiu .npz i el mateix nombre d'etiquetes. En aquest cas del dataframe només utilitzem la columna de la classe per treure les etiquetes i per mirar que estem agafant el mateix nombre de les dues classes. Un cop ja hem recorregut els arxius i tenim les dades en dues llistes X i Y passem a dividir-les. Utilitzem la funció train_test_split de la llibreria sklearn i ja ho tenim.
 
--Interval: Ara utilitzarem més el datafrem de les metadades. Dintre del bucle primer mirem quants intervals té el pacient (l'arxiu que toca ara). D'aquests agafem una porció anirà a test i la resta a train. Fem per tant dos "bucles" aquí dins on, en cada iteració busquem els índexs que pertanyen al interval en concret. D'aquests índexs fem un subsampling. Aquest serà equilibrat en les dues classes si anirà al train i serà aleatori si va al test.
+- Interval: Ara utilitzarem més el datafrem de les metadades. Dintre del bucle primer mirem quants intervals té el pacient (l'arxiu que toca ara). D'aquests agafem una porció anirà a test i la resta a train. Fem per tant dos "bucles" aquí dins on, en cada iteració busquem els índexs que pertanyen al interval en concret. D'aquests índexs fem un subsampling. Aquest serà equilibrat en les dues classes si anirà al train i serà aleatori si va al test.
 
--Recording: Dividir per gravació es tracta del mateix que per interval però canviant una variable. On abans posàvem "global_interval" ara posem "filename". De fet, en codi.py es tracta del mateix ja que declarem una variable separador que depenen de la divisió té un valor o un altre.
+- Recording: Dividir per gravació es tracta del mateix que per interval però canviant una variable. On abans posàvem "global_interval" ara posem "filename". De fet, en codi.py es tracta del mateix ja que declarem una variable separador que depenen de la divisió té un valor o un altre.
 
--Pacient: Aquesta divisió igual que la de les finestres és bastant simple. Això es deu a que ja recorrem cada pacient individualment. Per tant l'únic que hem de fer és fet un subsampling aleatori dels primers 4 pacients i enviar-lo a train. I amb la resta fer un subsampling balançejat i enviar-lo a test.
+- Pacient: Aquesta divisió igual que la de les finestres és bastant simple. Això es deu a que ja recorrem cada pacient individualment. Per tant l'únic que hem de fer és fet un subsampling aleatori dels primers 4 pacients i enviar-lo a train. I amb la resta fer un subsampling balançejat i enviar-lo a test.
 
 Amb aquesta forma de dividir aconseguim solucionar els problemes de desbalanceig mencionats en la introducció. Sent la més perillosa i que hem evitat el fet d'estar desbalancejat en el conjunt d'entrenament en quant a les classes. Això hagués pogut portar a que els nostres models es centressin a predir més d'una classe que de l'altre.
 
