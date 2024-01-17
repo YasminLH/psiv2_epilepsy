@@ -168,16 +168,14 @@ Una LSTM com a classificador té la capacitat de processar seqüències, aprendr
 
 La xarxa LSTM contè la següent estructura:
 
-    - LSTM - (input = 21,hidden =  20, output =2)
-    - LSTM - (input = 21,hidden =  20, output =2)
+    - LSTM - (input = 21, hidden =  20, output =2)
+    - LSTM - (input = 21, hidden =  20, output =2)
     - Dropout - (0.5) 
     - Batch Normalization - (hidden = 20, output = 2)
-    - Linear - (Num features = 2)
+    - Linear - (hidden = 20, output = 2)
 
 
-La LSTM consta de dues capes de LSTM per aprendre patrons en les seqüències de dades que rep, per reduir el overfiting del nostre model i que millores els resultats hem fet dropout i hem aplicat batch normalization. Per donar la sortida del LSTM hi ha per últim una capa linear que ens dona la classificació binara per saber si la persona té un atac d'epilèpsia o no
-
-La raó de l'utilització del Dropout i el Batch normalization, és per prevenir l'overfitting i millorar la generalització del model.
+La LSTM consta de dues capes de LSTM per aprendre patrons en les seqüències de dades que rep, per reduir el overfiting del nostre model hem fet dropout i hem aplicat batch normalization i així obtenir un millors resultats del nostre model. Per donar la sortida del LSTM hi ha per últim una capa linear que ens dona la classificació binara per saber si la persona té un atac d'epilèpsia o no
 El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
 
 La mètrica per avaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
@@ -281,7 +279,7 @@ Per altra banda gràcies al K-Fold, hem pogut triar quin és el millor model del
 Per altra banda, hem pogut veure que la xarxa neuronal Encoder va molt millor que la de l'LSTM, això és degut a que podria ser que l'LSTM no estigui explotant de manera òptima les relacions temporals de les dades, ja que en un segon no arriba a haver-hi molt de canvi o pot ser que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals.
 
 Les dues divisions que més ens importen són la d'intervals i la recording, ja que són les que realisticament som més aplicables en la vida real.
-Trobem que el model lstm és bo en interval i encoder és bo en recording.
+Trobem que el model LSTM és bo en interval i encoder és bo en recording.
 Depenent de la situació pot sortir a compte fer servir un o l'altre. En cas de dubte creiem que la millor opció seria l'encoder, ja que en interval no queda tant per darrere del lstm en accuracy.
 
 
