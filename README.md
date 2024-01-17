@@ -199,13 +199,11 @@ Podem veure que entre tots 4 models, destaca clarament el model 0 com a més efi
 
 #### LSTM 
 
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/0c0a53bf-5ad8-45c0-9f80-9de2e4cbb425)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/85b48c8d-20b1-45b8-82ba-5937fd9c7639)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/308d59f8-0ff3-44c7-9ad4-a22ba955a50e)
 
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/b57bf14c-dba2-4b8b-8b68-91b121240e43)
-
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/1b7e41a1-93f2-4f3b-b5e8-f48bc677348a)
-
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/63e0e802-66df-460f-a698-02616bc0d3a1)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/d8e0a25d-d96e-4fa1-b322-6f72265e2e61)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/e3b0c825-d84d-4ca1-ba02-0cd46aa54415)
 
 Podem veure que entre tots 4 models, destaca clarament el model 3 com a més eficient en generalització i que resisteix l'overfitting. Aquest model a diferència dels altres aprèn de manera adequada, però a causa de les poques dades de test que tenim sembla que no aprèn de manera precisa i es queda més o menys estable quan arriba a l'època 10, ja que no té res més que aprendre.     
 Segueix la més o menys la tendència òptima de la loss tant de train com de test.
