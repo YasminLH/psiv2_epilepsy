@@ -228,7 +228,7 @@ Podem veure que entre tots 4 models, destaca clarament el model 0 com a més efi
 Podem veure que entre tots 4 models, destaca clarament el model 3 com a més eficient en generalització i que resisteix l'overfitting. Aquest model a diferència dels altres aprèn de manera adequada, però a causa de les poques dades de test que tenim sembla que no aprèn de manera precisa i es queda més o menys estable quan arriba a l'època 10, ja que no té res més que aprendre.     
 Segueix la més o menys la tendència òptima de la loss tant de train com de test.
 
-Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima  les relacions temporals de les dades o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals. 
+Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima  les relacions temporals de les dades, ja que en un segon no arriba a haver molt de canvi o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals. 
 Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal de eliminar la complexitat i deixar només aquelles característiques més importants.
 
 ** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. **
