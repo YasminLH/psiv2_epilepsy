@@ -188,17 +188,15 @@ Utilizem la BCEWithLogitsLoss, per calcular les discrepàncies entre les predicc
 Utilizem les gràfiques de loss de train i test, per triar el millor model dels que ha generat KFold i hem entrenat.      
 
 #### Encoder 
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/d8331bd9-d828-42e8-bcd8-b8dc6b2a5c12)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/ccfb0cc8-8eb9-4a50-bba7-9b21c7ddd5b0)
 
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/7415167b-662d-4d56-92b6-fe75ce7cdc2c)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/c39149c5-110f-4ae6-84df-90d18428cc06)
 
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/f9d38d70-a57f-4348-8c0d-5b6c311463a9)
-
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/ac84b493-eb60-45a7-a3e9-db02026ff999)
-
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/6944df6d-d579-4d17-a6b8-a3029052b20a)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/c9a97a41-58db-4574-83fd-dc9a7cf3023c)
 
 
-Podem veure que entre tots 4 models el que millor generalitza, evita l'overfitting, aprén de manera correcta i adequada i segueix la tendència òptima la loss tant de train com de test, és el model
+Podem veure que entre tots 4 models el que millor generalitza, evita l'overfitting, aprén de manera correcta i adequada i segueix la tendència òptima la loss tant de train com de test, és el model 0.
 
 
 #### LSTM 
