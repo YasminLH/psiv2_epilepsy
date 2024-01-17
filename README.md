@@ -89,7 +89,7 @@ Un cop la seqüència del senyal passa per l'encoder crea un embedding amb carac
 #### FUSION
 La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
 
-#### Fully Connected
+#### FYLLY CONNECTED
 Aquesta és la capa fully connected, amb la que es realitzarà la classificació final. Conté dues capes totalment connectades, amb funcions d'activcaió ReLU entre elles. També inclou una capa dropout de 0.5, per la regularització i evitar l'overfitting, el que fa és apagar la meitat de les neurones durant el train de la xarxa. 
 L'última capa conté dues neurones de sortida, ja que es tracta d'un problema de classificació binària (si epilèpsi o no epilèpsia)
 Capa Fully Connected (fc):
@@ -143,13 +143,23 @@ BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una
 
 Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM. 
 
-La xarxa conte la següent estructura:
-        input_dim = 21
-        hidden_dim =  20
-        output_dim = 2
-        num_layers = 2
-        batch_size = 3
-  
+
+La xarxa LSTM conte la següent estructura:
+
+    Input_dim = 21
+    Hidden_dim =  20
+    Output_dim = 2
+    Num_layers = 2
+    Batch_size = 3
+    Droput = 0.5
+    Batch Normalization 
+    Capa Linear
+
+La raó de l'utilització del Dropout i el Batch normalization, és per prevenir l'overfitting i millorar la generalització del model.
+El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
+
+La mètrica per evaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
+
 
 ## CODI:
 Per executar els diferents casos, tenim opcions que comentem i descomentem, és a dir, si vols que s'executi el LSTM amb el nivell recording, deixas decomnetat la "tipus" LSTM i la "divisio" recoring.
