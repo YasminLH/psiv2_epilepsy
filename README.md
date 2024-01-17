@@ -239,35 +239,44 @@ Els millors resultats són els que s'han vist anteriorment, és a dir el que fa 
 
 ### Resultats Millor Model
 
-Un cop hem vist quin dels models es mes eficient, toca provar-lo amb el cunjunt de validation. Aquest es tracta del cunjunt de dades que habiem anomenat com a Xtest i Ytest en la part de dataloading. Per evitar confusions amb les grafiques de kfold ens referim a aquest conjunt com a validation.
-Agafem el model i amb una versio modificada de la funció test li passem les dades. Ens retornara (realment ho guarda) tant la loss com els outputs del model. Amb aquets outputs podrem calcular el accuracy.
+Un cop hem vist quin dels models és més eficient, toca provar-lo amb el conjunt de validation. Aquest es tracta del conjunt de dades que havíem anomenat com a Xtest i Ytest en la part de dataloading. Per evitar confusions amb les gràfiques de kfold ens referim a aquest conjunt com a validation.
+Agafem el model i amb una versió modificada de la funció test li passem les dades. Ens retornarà (realment ho guarda) tant la loss com els outputs del model. Amb aquests outputs podrem calcular l'accuracy.
 
-Ara veurem una taula per encoder i lstm on trobem els resultats dels millors model per cada una de les divisions. En aquesta taula trobem la diviso a la que pertanyen, la loss en train i validation, el accuracy i si el model es troba sesgat cap a una de les classes, es a dir, busca predir mes de una classe ignorant a l'altre.
-Considerem que un model esta sesgat si la differencia entre els accuracys especicifics per cada classe es mes gran de 0,05. 
+Ara veurem una taula per encoder i lstm on trobem els resultats delsmillor model per cada una de les divisions. En aquesta taula trobem la divisio a la que pertanyen, la loss en train i validation, l'accuracy i si el model es troba esbiaixat cap a una de les classes, és a dir, busca predir més d'una classe ignorant a l'altre.
+Considerem que un model està esbiaixat si la diferència entre els accuracys específics per cada classe és més gran de 0,05.
 
 
 #### Resultats Encoder millor Model 
 
-| Divisó  | Validation loss | Train loss  | Accuracy  | Sesgat |
+| Divisó  | Validation loss | Train loss  | Accuracy  | Esbiaixat |
 | --------- | ------- | ------ | ----- | -- |
 | Window    |  0.2414 | 0.0558 | 0.935 | No |
 | Interval  |  0.8197 | 0.2919 | 0.707 | No |
 | Recording |  0.4890 | 0.3441 | 0.810 | No |
 | Pacient   |  0.6286 | 0.1890 | 0.822 | No |
-  
+
+Podem observar d'aquesta taula vàries coses. La primera és que cap model es troba segat, de fet la diferència màxima es del 0.003. També podem veure que obtenim els millors resultats amb la divisió window. Això era d'esperar ja que és la generalització més gran. Ca nivell de generalització té dades més diferents. Tot a això, trobem un clar outlier amb la divisió d'interval. Que en comptes de tenir un valor semblant al de recording té un valor més baix que aquest i que el de pacient. Això es deu segurament a què hi ha hagut més overfiting en aquesta divisió. Ho sabem perquè és on tenim la diferència més gran entre train loss i validation loss.
+Deixant interval de banda veiem que tenim molt bons resultats.
+
 #### Resultats LSTM millor Model 
 
-| Divisó  | Validation loss | Train loss  | Accuracy  | Sesgat |
+| Divisó  | Validation loss | Train loss  | Accuracy  | Esbiaixat |
 | --------- | ------- | ------ | ----- | -- |
 | Window    |  0.6254 | 0.5509 | 0.713 | No |
 | Interval  |  0.4949 | 0.4798 | 0.801 | No |
 | Recording |  0.6749 | 0.6515 | 0.650 | No |
 | Pacient   |  0.7093 | 0.5138 | 0.690 | No |
 
+Podem veure com igual queen el model anterior no trobem que estigui sesgat.
+Tmbe veiem que en Window, Recording i Pacient segueix el  matreix patro que abans. Tenim els mateixos valors pero per sota. En canvi, en interval pasa el contrari, tenim un valor d'accuracy molt elevat. Podem veure que justament pasa el contrari en els seues valors de train loss i validation loss. No trobem res de overfiting. De fet pese al pitjor resultat en accuracy, trobem molt menys overfiting en el lstm que en el encoder.
 
+Creiem que això no es deu al lstm com a tal sino al fet de que l'em aturat abasn de que fes overfiting (amb menys epoques), i que amb mes epoques no hagues millorat els seus resultats a diferencia de l'autoencoder.
 
 ## CONCLUSIÓ
 
+En quant als objectius podem dir que hem aconseguit evitar els problemes que poguessin haguer vingut de una base de dades desbalancejada ja que els nostres models no es toben esbiaixats.
+Hem pogut utilitzar el mecanisme kfold per generar un model optim.
+Nose help plis 
 hem pogut agafar el optim optim tot. k fold
 bons resultats
 lstm es no tan bo com encoder
