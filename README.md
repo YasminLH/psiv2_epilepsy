@@ -198,7 +198,7 @@ Utilizem les gràfiques de loss de train i test, per triar el millor model dels 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/6944df6d-d579-4d17-a6b8-a3029052b20a)
 
 
-
+Podem veure que entre tots 4 models el que millor generalitza, evita l'overfitting, aprén de manera correcta i adequada i segueix la tendència òptima la loss tant de train com de test, és el model
 
 
 #### LSTM 
