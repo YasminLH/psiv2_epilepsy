@@ -251,7 +251,7 @@ Considerem que un model està esbiaixat si la diferència entre els accuracys es
 | Divisó  | Validation loss | Train loss  | Accuracy  | Esbiaixat |
 | --------- | ------- | ------ | ----- | -- |
 | Window    |  0.2414 | 0.0558 | 0.935 | No |
-| Interval  |  0.8197 | 0.2919 | 0.707 | No |
+| Interval  |  0.6332 | 0.3317 | 0.744 | No |
 | Recording |  0.4890 | 0.3441 | 0.810 | No |
 | Pacient   |  0.6286 | 0.1890 | 0.822 | No |
 
@@ -274,11 +274,14 @@ Creiem que això no es deu al lstm com a tal sinó al fet que l'hem aturat abans
 
 ## CONCLUSIÓ
 
-En quant als objectius podem dir que hem aconseguit evitar els problemes que poguessin haguer vingut de una base de dades desbalancejada ja que els nostres models no es toben esbiaixats.
-Hem pogut utilitzar el mecanisme kfold per generar un model optim.
-Nose help plis 
-Hem obtingut bons resultats
-lstm es no tan bo com encoder
-(creiem que te dos motius possibles)
+Podem concloure que hem aconseguit assolir tots els nostres objectius satisfactòriament.
+A més a més, evitant el desbalanceig de les dades, ja que els nostres models no es troben esbiaixats.
+Per altra banda gràcies al K-Fold, hem pogut triar quin és el millor model dels 4 que s'han generat, destacant aquell com a més eficient en generalització i que resisteix l'overfitting.
+
+Per altra banda, hem pogut veure que la xarxa neuronal Encoder va molt millor que la de l'LSTM, això és degut a que podria ser que l'LSTM no estigui explotant de manera òptima les relacions temporals de les dades, ja que en un segon no arriba a haver-hi molt de canvi o pot ser que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals.
+
+Les dues divisions que més ens importen són la d'intervals i la recording, ja que són les que realisticament som més aplicables en la vida real.
+Trobem que el model lstm és bo en interval i encoder és bo en recording.
+Depenent de la situació pot sortir a compte fer servir un o l'altre. En cas de dubte creiem que la millor opció seria l'encoder, ja que en interval no queda tant per darrere del lstm en accuracy.
 
 
