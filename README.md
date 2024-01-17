@@ -83,7 +83,7 @@ Un cop la seqüència del senyal passa per l'encoder crea un embedding amb carac
 #### FUSION
 La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
 
-#### FYLLY CONNECTED
+#### FULLY CONNECTED
 Aquesta és la capa fully connected, amb la que es realitzarà la classificació final. Conté dues capes totalment connectades, amb funcions d'activcaió ReLU entre elles. També inclou una capa dropout de 0.5, per la regularització i evitar l'overfitting, el que fa és apagar la meitat de les neurones durant el train de la xarxa. 
 L'última capa conté dues neurones de sortida, ja que es tracta d'un problema de classificació binària (si epilèpsi o no epilèpsia)
 Capa Fully Connected (fc):
@@ -206,6 +206,8 @@ Com a resultat final podem veure comparant les losses que la xarxa neuronal Enco
 Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal de eliminar la complexitat i deixar només aquelles característiques més importants.
 
 ** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. **
+
+Els millors resultats són els que s'han vist anteriorment, és ha dir el que fa la divisió per window.
 
 ### Resultats Encoder millor Model 
 
