@@ -189,6 +189,15 @@ Utilizem les gràfiques de loss de train i test, per triar el millor model dels 
 
 #### Encoder 
 
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/7415167b-662d-4d56-92b6-fe75ce7cdc2c)
+
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/f9d38d70-a57f-4348-8c0d-5b6c311463a9)
+
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/ac84b493-eb60-45a7-a3e9-db02026ff999)
+
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/6944df6d-d579-4d17-a6b8-a3029052b20a)
+
+
 
 
 
