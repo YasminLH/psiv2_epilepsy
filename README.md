@@ -267,11 +267,11 @@ Deixant interval de banda veiem que tenim molt bons resultats.
 Podem veure com igual que en el model anterior no trobem que estigui esbiaixat.
 També veiem que en Window, Recording i Pacient segueix el mateix patró que abans. Tenim els mateixos valors però per sota. En canvi, en interval passa el contrari, tenim un valor d'accuracy molt elevat. Podem veure que justament pasa el contrari en els seues valors de train loss i validation loss. No trobem res de overfiting. De fet, fins i tot en el pitjor resultat en accuracy, trobem molt menys overfiting en el lstm que en el encoder.
 
-Creiem que això no es deu al lstm com a tal sinó al fet que l'hem aturat abans que fes overfiting (amb menys èpoques), i que amb més èpoques no hagués millorat els seus resultats a diferència de l'autoencoder.
+Creiem que això no es deu al LSTM com a tal sinó al fet que l'hem aturat abans que fes overfiting (amb menys èpoques), i que amb més èpoques no hagués millorat els seus resultats a diferència de l'autoencoder.
 
 ## CONCLUSIÓ
 
-Podem concloure que hem aconseguit assolir tots els nostres objectius satisfactòriament.
+Podem concloure que hem aconseguit assolir tots els nostres objectius satisfactòriament, hem classificat binariament de manera correcte amb els 4 nivells i hem pogut veure que el nivell de window és pronunciadament més precís que els altres.
 A més a més, evitant el desbalanceig de les dades, ja que els nostres models no es troben esbiaixats.
 Per altra banda gràcies al K-Fold, hem pogut triar quin és el millor model dels 4 que s'han generat, destacant aquell com a més eficient en generalització i que resisteix l'overfitting.
 
