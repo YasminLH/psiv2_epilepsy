@@ -277,7 +277,7 @@ Per altra banda gràcies al K-Fold, hem pogut triar quin és el millor model del
 
 Per altra banda, hem pogut veure que la xarxa neuronal Encoder va molt millor que la de l'LSTM, això és degut a que podria ser que l'LSTM no estigui explotant de manera òptima les relacions temporals de les dades, ja que en un segon no arriba a haver-hi molt de canvi o pot ser que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals.
 
-Les dues divisions que més ens importen són la d'intervals i la recording, ja que són les que realisticament som més aplicables en la vida real.
+Finalment, les dues divisions que més ens importen són la d'intervals i la recording, ja que són les que realisticament som més aplicables en la vida real.
 Trobem que el model LSTM és bo en interval i encoder és bo en recording.
 Depenent de la situació pot sortir a compte fer servir un o l'altre. En cas de dubte creiem que la millor opció seria l'encoder, ja que en interval no queda tant per darrere del lstm en accuracy.
 
