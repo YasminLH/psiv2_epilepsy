@@ -1,4 +1,4 @@
-# REPTA EPILEPSIA AMB ELECTROENCEFALOGRAMA
+# REPTE EPILÈPSIA AMB ELECTROENCEFALOGRAMA
 
 
 ## INTRODUCCIÓ
@@ -48,32 +48,53 @@ El GitHub l'hem distribuït de la següent manera:
 - codi.py: codi en python que conté el codi d'aquesta pràctica, tant el de LSTM com el de l'Encoder. 
 - Losses: directori que conté les gràfiques de les losses
 - Pickle.py: fitxter python que conté el codi on es generen les gràfiques de loss del train i test.
+- Pickles: directori que conté els objectes pickle, per cadascun del models que tenim i per cadascun del nivells
 
 
 ## PROCEDIMENT
+
+    
+### DATALOADER:
+
+Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diuen quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model. 
+Seguint el que hem dit anteriorment del dataloader hem fet dos dataloaders que un consisteix en separar per finestres sense agruparles per pacient per entreanr el nostre model és a dir que a qui pertany les finestres no té importancia. Per cada classe hi ha 2000 finestres. En canvi l'altre dataloader entrena per pacient per tan per cada pacient agrupem les seves finestres correponents on hi han atacs o no d'epilepsia i fem l'entrenament tenint en compte aquesta agrupació per entreanar el nostre model. Per cada pacient s'afageix la mateixa quantitat de finestres que siguin atac i que no ho siguin per aixì sigui un dataloader balancejat. De cada classe hi ha 450 finestres. 
+
+----- que pasa en la separacion de interva?
+
 
 ### XARXA NEURONAL: ENCODER I LSTM
 
 Ens hem basat en la següent estructura per fer la xarxa neuronal.
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
 
-La raó d'aquesta elecció ha estat perquè així podiem reutilitzar el codi de l'anterior repte, així doncs l'únic canvi significatiu que hem fet ha estat afegir un data fusion unit a la sortida de l'encoder i fer que l'entrada de l'encoder sigui un canal en comptes dels 16 a la vegada.  
+La raó d'aquesta elecció ha estat perquè així podiem reutilitzar part del codi de l'anterior repte i perquè en comparació amb l'altre opció aquesta se'ns feia més fàcil d'implmentar.
+
+La nostra xarxa neuronal conté 3 principals parts: encoder, fusion i fully connected.
+
+#### ENCODER
+L'encoder és responsable de transformar la entrada en una representació que pugui ser utilitzada per la resta del model per realitzar tasques especifiques, en el nostre cas és la classificació de si una persona està rebent o no un atac d'epilepsia
+Conté varies capes convolucionals 2d, una de les raons per les quals em volgut utilitzar l'anterior estructura, ja que així podiem reutilitzar les mateixes capes 2d.
+No obstant aixó, hem hagut de canviar l'entrada de l'encoder, ja que tal i com hem vist a l'estructura anterior, volem tractar els canals individualment i ja a posteriori fusionar-los. 
+Cada capa de convolució aprèn a extreure les carecteristiques locals necessaries per poder identificar de les windows, pacients, intervals o dels recorings la presència d'un atac o no.
+Seguit de les capes 2d, tenim les capes de max pooling, aquestes són molt utilitzades, ja que s'usen per reduïr la dimensió, mantenint les característiques importants. 
+Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride). 
+Aquesta combinació de la cpa convolucional i la max pooling, és la més acertada en aquests àmbits, ja que dona resultats molt específics i bons.
+
+Per acabar tenim les funcions d'activació ReLU, que ajuden a al xarxa a aprendre representacions no lineals de les dades.
+
+Un cop la seqüència del senyal passa per l'encoder crea un embedding amb característiques de la seqüència espaial del senyal del cervell, que ha estat reduït gradualment les dimensions de l'entrada i augmentat el número de canals i això permetrà una futura classificació.
+
+#### FUSION
+La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
+
+#### Fully Connected
+Aquesta és la capa fully connected, amb la que es realitzarà la classificació final. Conté dues capes totalment connectades, amb funcions d'activcaió ReLU entre elles. També inclou una capa dropout de 0.5, per la regularització i evitar l'overfitting, el que fa és apagar la meitat de les neurones durant el train de la xarxa. 
+L'última capa conté dues neurones de sortida, ja que es tracta d'un problema de classificació binària (si epilèpsi o no epilèpsia)
+Capa Fully Connected (fc):
 
 
-
-L'encoder és responsable de transformar la entrada en una representació que pugui ser utilitzada per la resta del model per realitzar tasques especifiques, en el nostre cas és la classificació de si una persona està rebent o no un atac d'epilepsia. En el nostre cas, l'encoder està composat per capes de convolució, seguides de funcions d'activació ReLU i capes de max pooling. Cada capa de convolució aprèn a extreure les carecteristiques necessaries per poder identificar les persones que tenen un atac. Després de que la secuencia del senyal pasin per encoder crea un embedding amb carecteritiques de la secuencia espacial del senyal del cervell. Que permet fer una clasificació. Optem per utilitzar capes convolucionals 2D per la seva eficàcia en la reducció de dimensionalitat i en la captura de diversos patrons presents al senyal. Per assegurar-nos d'un encoder precís i robust, decidim limitar el nombre de filtres utilitzats. Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride). Tant el padding com l'stride es configuren a 1 per mantenir la dimensionalitat (padding) i evitar ometre cap píxel (stride).
-
-
-
-
-
-## Dataloader:
-Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diun quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model. 
-Seguint el que hem dit anteriorment del dataloader hem fet dos dataloaders que un consisteix en separar per finestres sense agruparles per pacient per entreanr el nostre model és a dir que a qui pertany les finestres no té importancia. Per cada classe hi ha 2000 finestres. En canvi l'altre dataloader entrena per pacient per tan per cada pacient agrupem les seves finestres correponents on hi han atacs o no d'epilepsia i fem l'entrenament tenint en compte aquesta agrupació per entreanar el nostre model. Per cada pacient s'afageix la mateixa quantitat de finestres que siguin atac i que no ho siguin per aixì sigui un dataloader balancejat. De cada classe hi ha 450 finestres. 
-
------ que pasa en la separacion de interva?
-
-La xarxa conte la següent estructura:
+La xarxa neuronal amb les 3 components té la següent estructura 
+Encoder:
 
     - Convolucional - 2D(1, 128, (1,3), stride=1, padding=(0,1))
     - ReLu
@@ -85,8 +106,7 @@ La xarxa conte la següent estructura:
     - ReLu
     - MaxPool - 2D ((1,2), stride=(1,2), padding=(0,1))
     
-
-Les capes per fer la fusió de cracaterístiques tenen la següent estructura:
+Fusion:
 
     Convolucional - 2D (21,1,(1,1)
     ReLu
@@ -94,7 +114,12 @@ Les capes per fer la fusió de cracaterístiques tenen la següent estructura:
     Dropout: 0.5
     Flatten()
 
-La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, seguida d'una funció d'activació ReLU per tal de no aplicar linealitat. A continuació s'utilitza un adaptive average pooling, per tal d'ajustar automàticamnet la dimensió de la sortida i per últim apliquem un flatten, per tal d'aplanar la sortida a un vector unidimensional.
+Fully connected
+
+    Linear - (512 * 4, 256),
+    ReLU
+    Dropout - (0.5),  
+    Linear - (256, 2)
 
 #### Paràmetres
 
@@ -136,8 +161,12 @@ Això sí sempre tenint en compte, que per cada cas té un número òptim d'èpo
 - lstm  interval -->10 epocas  
 - lstm  pacient --> 15 epocas  
 - lstm  recording --> 6 epocas
+
+  
 ## RESULTATS
 
 
 ## CONCLUSIÓ
+
+
 
