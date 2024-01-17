@@ -211,7 +211,7 @@ Segueix la més o menys la tendència òptima de la loss tant de train com de te
 Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima  les relacions temporals de les dades o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals. 
 Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal de eliminar la complexitat i deixar només aquelles característiques més importants.
 
-** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. 
+** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. **
 
 ### Resultats Encoder millor Model 
 
