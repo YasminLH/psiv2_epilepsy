@@ -233,7 +233,7 @@ Per exemple l'encoder té capes específiques que aprenen patrons locals i capes
 
 ** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. **
 
-Els millors resultats són els que s'han vist anteriorment, és ha dir el que fa la divisió per window.
+Els millors resultats són els que s'han vist anteriorment, és a dir el que fa la divisió per window.
 
 ### Resultats Encoder millor Model 
 
