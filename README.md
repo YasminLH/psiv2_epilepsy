@@ -166,15 +166,16 @@ BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una
 
 Una LSTM com a classificador té la capacitat de processar seqüències, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de classificació on hi ha presents patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depèn de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM.
 
-La xarxa LSTM conte la següent estructura:
+La xarxa LSTM contè la següent estructura:
 
-    - LTM - (input = 21,hidden =  20, output =2)
-    - LTM - (input = 21,hidden =  20, output =2)
+    - LSTM - (input = 21,hidden =  20, output =2)
+    - LSTM - (input = 21,hidden =  20, output =2)
     - Dropout - (0.5) 
     - Batch Normalization - (hidden = 20, output = 2)
-    - Linear - (Num features = 20)
+    - Linear - (Num features = 2)
 
 
+La LSTM consta de dues capes de LSTM per aprendre patrons en les seqüències de dades que rep, per reduir el overfiting del nostre model i que millores els resultats hem fet dropout i hem aplicat batch normalization. Per donar la sortida del LSTM hi ha per últim una capa linear que ens dona la classificació binara per saber si la persona té un atac d'epilèpsia o no
 
 La raó de l'utilització del Dropout i el Batch normalization, és per prevenir l'overfitting i millorar la generalització del model.
 El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
