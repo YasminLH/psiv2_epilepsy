@@ -52,8 +52,8 @@ Aquestes finestres no es troben balancejades en cap de les formes. És a dir:
 
 -La distribució de les classes és diferent per cada una de les divisions. En un interval podem trobar un 90% de dades negatives i en un altre un 70%.
 
-To això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall *(nose)* en un altre apartat però bàsicament per evitar problemes:
-Hem fet un subsampling per pacient; per cada pacient hem agafat la mateixa quantitat de dades per les diferents classes i així poder fer un entrenament amb les dades equilibrades.
+Tot això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall posteriorment però bàsicament per evitar problemes
+hem fet un subsampling per pacient. Per cada pacient hem agafat la mateixa quantitat de dades per les diferents classes i així poder fer un entrenament amb les dades equilibrades.
 
 
 ## DISTRIBUCIÓ
