@@ -235,15 +235,30 @@ Per exemple l'encoder té capes específiques que aprenen patrons locals i capes
 
 Els millors resultats són els que s'han vist anteriorment, és a dir el que fa la divisió per window.
 
-### Resultats Encoder millor Model 
+### Resultats Millor Model
+
+Un cop hem vist quin dels models es mes eficient, toca provar-lo amb el cunjunt de validation. Aquest es tracta del cunjunt de dades que habiem anomenat com a test en la part de 
 
 
-### Resultats LSTM millor Model 
+#### Resultats Encoder millor Model 
+
+| Divisó  | Validation loss | Train loss  | Accuracy  | Sesgat |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+ | Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+  
+#### Resultats LSTM millor Model 
 
 
 
 
 ## CONCLUSIÓ
 
-
+hem pogut agafar el optim optim tot. k fold
+bons resultats
+lstm es no tan bo com encoder
+(creiem que te dos motius possibles)
+patilleada de interval i recording.
 
