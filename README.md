@@ -161,24 +161,40 @@ El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de 
 La mètrica per evaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
 
 
-## CODI:
-Per executar els diferents casos, tenim opcions que comentem i descomentem, és a dir, si vols que s'executi el LSTM amb el nivell recording, deixas decomnetat la "tipus" LSTM i la "divisio" recoring.
+## ÈPOQUES:
+Per cada cas, tenim un número òptim d'èpoques, ja que per cada nivell i/o divisió cal una precisió o una altra. 
+
+    - encoder window --> 30 epocas 
+    - encoder interval -->10 epocas 
+    - encoder pacient --> 14 epocas 
+    - encoder recording --> 6 epocas
+    
+    - lstm  window --> 15 epocas 
+    - lstm  interval -->10 epocas  
+    - lstm  pacient --> 15 epocas  
+    - lstm  recording --> 6 epocas
+    
+Per anar canviant de nivell o divisió, comentem o descomentem les línies que ens interessen, per exemple, vull executar el model amb "tipus" LSTM i "divisió" recording.
 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/8054e2fa-9e75-4862-8694-18a23ff47319)
 
-Això sí sempre tenint en compte, que per cada cas té un número òptim d'èpoques i això s'ha de respectar, per tant, es canvia també el número d'èpoques.
-- encoder window --> 30 epocas 
-- encoder interval -->10 epocas 
-- encoder pacient --> 14 epocas 
-- encoder recording --> 6 epocas
-
-- lstm  window --> 15 epocas 
-- lstm  interval -->10 epocas  
-- lstm  pacient --> 15 epocas  
-- lstm  recording --> 6 epocas
-
   
 ## RESULTATS
+
+Com que utiltzem un KFold, per triar el millor model, mirem la corba de loss tant de train com de test. 
+
+### Resultats Encoder KFOLD
+
+
+### Resultats LSTM KFOLD
+
+
+### Resultats Encoder millor Model 
+
+
+### Resultats LSTM millor Model 
+
+
 
 
 ## CONCLUSIÓ
