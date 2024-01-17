@@ -6,9 +6,9 @@
 Analitzarem diferents senyals cerebrals, per tal d'entrenar un model d'intel·ligència artificial que pugui detectar si una persona està patint o no un atac d'epilèpsia. Per tal de poder classificar quan una persona rep o no un atac s'utilitzaran 4 nivells: les finestres com a nivell més baix, els intervals, recordings i pacients respectivament.
 
 Les finestres són un grup de mostres de senyals en el temps d'un pacient en concret, i estan etiquetades amb "no té epilèpsia" i "té epilèpsia". També es troben etiquetades amb tres metadades més. A quin Interval temporal pertanyen, en quina gravació (o recording) pertanyen i de quin pacient son. Aquestes metadades són les que ens permetran fer aquests quatre nivells
-Cada nivell és més genèric que l'anterior. És a dir el primer grup de Finestres que podem fer és Finestres que pertanyen al mateix Interval. Un Interval és un conjunt de Finestres que es troben en el mateix temps. Un recording és un grup de intervals (o un sol) que pertany a una gravació. Un pacient pot tenir vàries gravacions o recordings de dies diferents.
+Cada nivell és més genèric que l'anterior. És a dir el primer grup de Finestres que podem fer és Finestres que pertanyen al mateix Interval. Un Interval és un conjunt de Finestres que es troben en el mateix temps. Un recording és un grup d'intervals (o un sol) que pertany a una gravació. Un pacient pot tenir diverses gravacions o recordings de dies diferents.
 
-Procedimentalment, hem decidit tenir dos enfocs, el de l'encoder i l'LSTM. L'encoder canviarà l'embedding de característiques del senyal rebut per poder extreure les característiques d'una manera en la qual siguin més fàcils de classificar i poder diferenciar entre les diferents classes que rep el model.
+Procedimentalment, hem decidit tenir dos enfocaments, el de l'encoder i l'LSTM. L'encoder canviarà l'embedding de característiques del senyal rebut per poder extreure les característiques d'una manera en la qual siguin més fàcils de classificar i poder diferenciar entre les diferents classes que rep el model.
 
 En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg termini, ja que les RNN tradicionals sempre tenen problemes amb el gradient amb seqüències llargues. LSTM té l'habilitat de posseir cel·les amb memòria, és a dir, cel·les que estan regulades per cel·les que controlen la informació que surt i entra, fent així que la xarxa pugui oblidar informació de poca importància i mantenint tota aquella informació que aporta i permet aprendre i millorar el model.
 
@@ -34,10 +34,10 @@ Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir 
 
 Aquesta base de dades es troba de la següent manera:
 
-- 24 arxius en format .npz, un per cada pacient, que contenen les dades de les pròpies senyals. Cada arxiu és per tant un array amb format (numero de finestres, canals, temps). El nombre de finestres varia per cada pacient. Cada finestra té 21 canals i cada finestra està dividida en trossets de 128 temporalment. Cada finestra correspon a un segon de recording. Per tant, tenim les finestres dividides en 21 canals i 1/128 segons.
+- 24 arxius en format .npz, un per cada pacient, que contenen les dades de les pròpies senyals. Cada arxiu és per tant un array amb format (número de finestres, canals, temps). El nombre de finestres varia per cada pacient. Cada finestra té 21 canals i cada finestra està dividida en trossets de 128 temporalment. Cada finestra correspon a un segon de recording. Com a resultat, tenim les finestres dividides en 21 canals i 1/128 segons.
 
-- 24 arxius en fomat .parquet, un per cada pacient, que contenen les metadades de cada una de les finestres. Cada arxiu es tracta per tant d'un Dataframe on cada fila representa una finestra. Conte la classe, l'interval, el recording i el pacient al qual pertany cada finestra.
-Els dos arxius es troben relacionat pel propi índex. És a dir, la primera entrada de l'array coincideix amb la primera entrada del Dataframe.
+- 24 arxius en fomat. parquet, un per cada pacient, que contenen les metadades de cada una de les finestres. Cada arxiu es tracta, per tant, d'un Dataframe on cada fila representa una finestra. Conte la classe, l'interval, el recording i el pacient al qual pertany cada finestra.
+Els dos arxius es troben relacionat pel mateix índex. És a dir, la primera entrada de l'array coincideix amb la primera entrada del Dataframe.
 
 En total tenim 571905 finestres. Aquest és un nombre molt elevat de dades i si volguéssim utilitzar-les totes necessitaríem 200 GB de memòria ram aproximadament.
 Aquestes finestres no es troben balancejades en cap de les formes. És a dir:
@@ -52,17 +52,17 @@ Aquestes finestres no es troben balancejades en cap de les formes. És a dir:
 
 - La distribució de les classes és diferent per cada una de les divisions. En un interval podem trobar un 90% de dades negatives i en un altre un 70%.
 
-Tot això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall posteriorment però bàsicament per evitar problemes
+Tot això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall posteriorment, però bàsicament per evitar problemes
 hem fet un subsampling per pacient. Per cada pacient hem agafat la mateixa quantitat de dades per les diferents classes i així poder fer un entrenament amb les dades equilibrades.
 
 
 ## DISTRIBUCIÓ
 
 El GitHub l'hem distribuït de la següent manera:
-- codi.py: codi en python que conté el codi d'aquesta pràctica, tant el de LSTM com el de l'Encoder. 
+- codi.py: codi en python que conté el codi d'aquesta pràctica, tant el de LSTM com el de l'Encoder.
 - Losses: directori que conté les gràfiques de les losses
 - Pickle.py: fitxter python que conté el codi on es generen les gràfiques de loss del train i test.
-- Pickles: directori que conté els objectes pickle, per cadascun del models que tenim i per cadascun del nivells
+- Pickles: directori que conté els objectes pickle, per cadascun dels models que tenim i per cadascun dels nivells
 
 
 ## PROCEDIMENT
@@ -70,28 +70,29 @@ El GitHub l'hem distribuït de la següent manera:
     
 ### DATALOADING:
 
+Com ja s'ha mencionat abans la càrrega de dades no és trivial, ja que no totes les dades caben a memòria ram. Per tant, la solució és fer un subsampling. La càrrega de dades és diferent per cada una de les 4 divisions que fem: per finestres, per intervals, per recordings i per pacients.
+Totes per això tenen un element en comú, el tractament arxiu a arxiu amb un bucle *for*. Carreguem un arxiu, el tractem balancejant i/o fent la divisió train test, guardem les dades en format X (N,21,128) i Y(N) i passem al següent arxiu. Al final ens queden 4 llistes: Xtrain, Xtest, Ytrain, Ytest. Les X contenen les dades com a tal i la Y conte la classe. Per treballar el que fem és primer carregar el dataframe, treballar amb l'índexs d'aquests i per últim amb el índex resultant final carreguem les dades .npz.
 
-Com ja s'ha mencionat abans la càrrega de dades no és trivial, ja que no totes les dades caben a memòria ram. Per tant la solució és fer un subsampling. La càrrega de dades és diferent per cada una de les 4 divisions que fem: per finestres, per intervals, per recordings i per pacients.
-Totes per això tenen un element en comú, el tractament arxiu a arxiu amb un bucle *for*. Carreguem un arxiu, el tractem balancejant i/o fent la divisió train test, guardem les dades en format X (N,21,128) i Y(N) i passem al seguennt arxiu. Al final ens queden 4 llistes: Xtrain, Xtest, Ytrain, Ytest. Les X contenen les dades com a tal i la Y conte la classe. Per treballar el que fem és primer carregar el dataframe, treballar amb l'índexs d'aquests i per últim amb el índex resultant final carreguem les dades .npz.
+- Window: Aquesta és la divisió més simple i més fàcil. Dintre del bucle per a cada arxiu carreguem un nombre de les dades de l'arxiu .npz i el mateix nombre d'etiquetes. En aquest cas del dataframe només utilitzem la columna de la classe per treure les etiquetes i per mirar que estem agafant el mateix nombre de les dues classes. Un cop ja hem recorregut els arxius i tenim les dades en dues llistes X i Y passem a dividir-les. Fem servir la funció train_test_split de la llibreria sklearn i ja ho tenim.
 
-- Window: Aquesta és la divisió més simple i més fàcil. Dintre del bucle per a cada arxiu carreguem un nombre de les dades de l'arxiu .npz i el mateix nombre d'etiquetes. En aquest cas del dataframe només utilitzem la columna de la classe per treure les etiquetes i per mirar que estem agafant el mateix nombre de les dues classes. Un cop ja hem recorregut els arxius i tenim les dades en dues llistes X i Y passem a dividir-les. Utilitzem la funció train_test_split de la llibreria sklearn i ja ho tenim.
+- Interval: Ara farem servir més el datafrem de les metadades. Dintre del bucle primer mirem quants intervals té el pacient (l'arxiu que toca ara). D'aquests agafem una porció anirà a test i la resta a train. Fem per tant dos "bucles" aquí dins on, en cada iteració busquem els índexs que pertanyen a l'interval en concret. D'aquests índexs fem un subsampling. Aquest serà equilibrat en les dues classes si anirà al train i serà aleatori si va al test.
 
-- Interval: Ara utilitzarem més el datafrem de les metadades. Dintre del bucle primer mirem quants intervals té el pacient (l'arxiu que toca ara). D'aquests agafem una porció anirà a test i la resta a train. Fem per tant dos "bucles" aquí dins on, en cada iteració busquem els índexs que pertanyen al interval en concret. D'aquests índexs fem un subsampling. Aquest serà equilibrat en les dues classes si anirà al train i serà aleatori si va al test.
+- Recording: Dividir per gravació es tracta del mateix que per interval però canviant una variable. On abans posàvem "global_interval" ara posem "filename". De fet, en codi.py es tracta del mateix, ja que declarem una variable separadora que depenen de la divisió té un valor o un altre.
 
-- Recording: Dividir per gravació es tracta del mateix que per interval però canviant una variable. On abans posàvem "global_interval" ara posem "filename". De fet, en codi.py es tracta del mateix ja que declarem una variable separador que depenen de la divisió té un valor o un altre.
+- Pacient: Aquesta divisió igual que la de les finestres és bastant simple. Això es deu al fet que ja recorrem cada pacient individualment. Per tant, l'únic que hem de fer és fet un subsampling aleatori dels primers 4 pacients i enviar-lo a train. I amb la resta fer un subsampling balancejat i enviar-lo a test.
 
-- Pacient: Aquesta divisió igual que la de les finestres és bastant simple. Això es deu a que ja recorrem cada pacient individualment. Per tant l'únic que hem de fer és fet un subsampling aleatori dels primers 4 pacients i enviar-lo a train. I amb la resta fer un subsampling balançejat i enviar-lo a test.
-
-Amb aquesta forma de dividir aconseguim solucionar els problemes de desbalanceig mencionats en la introducció. Sent la més perillosa i que hem evitat el fet d'estar desbalancejat en el conjunt d'entrenament en quant a les classes. Això hagués pogut portar a que els nostres models es centressin a predir més d'una classe que de l'altre.
+Amb aquesta forma de dividir aconseguim solucionar els problemes de desbalanceig mencionats en la introducció. Sent la més perillosa i que hem evitat el fet d'estar desbalancejat en el conjunt d'entrenament respecte a les classes. Això hauria pogut portar al fet que els nostres models es centressin a predir més d'una classe que de l'altre.
 
 A partir d'ara ens referirem al conjunt de Xtest i Ytest com a conjunt de validation. Això ho fem així per evitar confusions posteriorment.
+
 
 ### XARXA NEURONAL: ENCODER I LSTM
 
 Ens hem basat en la següent estructura per fer la xarxa neuronal.
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/4570c698-fa07-48bb-ae09-f00959730f8b)
 
-La raó d'aquesta elecció ha estat perquè així podiem reutilitzar part del codi de l'anterior repte i perquè en comparació amb l'altre opció aquesta se'ns feia més fàcil d'implmentar.
+La raó d'aquesta elecció ha estat perquè així podíem reutilitzar part del codi de l'anterior repte i perquè en comparació amb l'altra opció aquesta se'ns feia més fàcil d'implementar.
+
 
 La nostra xarxa neuronal conté 3 principals parts: encoder, fusion i fully connected.
 
@@ -113,7 +114,7 @@ La idea és fusionar els 21 canals en 1 de sol amb la capa de convolució, segui
 
 #### FULLY CONNECTED
 Aquesta és la capa fully connected, amb la que es realitzarà la classificació final. Conté dues capes totalment connectades, amb funcions d'activcaió ReLU entre elles. També inclou una capa dropout de 0.5, per la regularització i evitar l'overfitting, el que fa és apagar la meitat de les neurones durant el train de la xarxa. 
-L'última capa conté dues neurones de sortida, ja que es tracta d'un problema de classificació binària (si epilèpsi o no epilèpsia)
+L'última capa conté dues neurones de sortida, ja que es tracta d'un problema de classificació binària (si epilèpsia  o no epilèpsia)
 Capa Fully Connected (fc):
 
 
@@ -157,14 +158,13 @@ Els paràmetres utilitzats per tal d'arribar a un resultat robust i coherent han
     Criterion: BCEWithLogitsLoss
     dropout = 0.5
 
-BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binaria entre les probabilitats d'entrada i de la sortida.
+BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binària entre les probabilitats d'entrada i de la sortida.
 
 
 
 ### LSTM
 
-Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM. 
-
+Una LSTM com a classificador té la capacitat de processar seqüències, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de classificació on hi ha presents patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depèn de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM.
 
 La xarxa LSTM conte la següent estructura:
 
@@ -180,7 +180,7 @@ La xarxa LSTM conte la següent estructura:
 La raó de l'utilització del Dropout i el Batch normalization, és per prevenir l'overfitting i millorar la generalització del model.
 El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
 
-La mètrica per evaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
+La mètrica per avaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
 
 
 ## ÈPOQUES:
@@ -202,7 +202,7 @@ Per anar canviant de nivell o divisió, comentem o descomentem les línies que e
 
 
 ## LOSS
-Utilizem la BCEWithLogitsLoss, per calcular les discrepàncies entre les prediccions del model i les etiquetes reals i  obtenim la loss, específicament una loss per les dades train i una loss per les dades test. Això ho guardem en un objecte pickle, per tal de poder manipular més endavant com vulguem. El codi on generem els gràfics pertinents està al fitxer "pickle.py". Aquestes gràfiques ens serveixen per monitorar i veure quins dels models que hem generat ens va millor, generalitza més i evitar l'overfitting. 
+Utilitzem  la BCEWithLogitsLoss, per calcular les discrepàncies entre les prediccions del model i les etiquetes reals i  obtenim la loss, específicament una loss per les dades train i una loss per les dades test. Això ho guardem en un objecte pickle, per tal de poder manipular més endavant com vulguem. El codi on generem els gràfics pertinents està al fitxer "pickle.py". Aquestes gràfiques ens serveixen per monitorar i veure quins dels models que hem generat ens va millor, generalitza més i evitar l'overfitting. 
 
 ## RESULTATS
 
@@ -227,13 +227,13 @@ Podem veure que entre tots 4 models, destaca clarament el model 0 com a més efi
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/d8e0a25d-d96e-4fa1-b322-6f72265e2e61)
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/e3b0c825-d84d-4ca1-ba02-0cd46aa54415)
 
-Podem veure que entre tots 4 models, destaca clarament el model 3 com a més eficient en generalització i que resisteix l'overfitting. Aquest model a diferència dels altres aprèn de manera adequada, però a causa de les poques dades de test que tenim sembla que no aprèn de manera precisa i es queda més o menys estable quan arriba a l'època 10, ja que no té res més que aprendre.     
-Segueix la més o menys la tendència òptima de la loss tant de train com de test.
+Podem veure que entre tots 4 models, destaca clarament el model 3 com a més eficient en generalització i que resisteix l'overfitting. Aquest model a diferència dels altres aprèn de manera adequada, però a causa de les poques dades de test que tenim sembla que no aprèn de manera precisa i es queda més o menys estable quan arriba a l'època 10, ja que no té res més que aprendre.
+Segueix-la més o menys la tendència òptima de la loss tant de train com de test.
 
-Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima  les relacions temporals de les dades, ja que en un segon no arriba a haver molt de canvi o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals. 
-Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal de eliminar la complexitat i deixar només aquelles característiques més importants.
+Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima les relacions temporals de les dades, ja que en un segon no arriba a haver-hi molt de canvi o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals.
+Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal d'eliminar la complexitat i deixar només aquelles característiques més importants.
 
-** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. **
+** Les altres losses dels nivells recording, interval i pacient estan a la carpeta losses. **
 
 Els millors resultats són els que s'han vist anteriorment, és a dir el que fa la divisió per window.
 
@@ -242,7 +242,7 @@ Els millors resultats són els que s'han vist anteriorment, és a dir el que fa 
 Un cop hem vist quin dels models és més eficient, toca provar-lo amb el conjunt de validation. Aquest es tracta del conjunt de dades que havíem anomenat com a Xtest i Ytest en la part de dataloading. Per evitar confusions amb les gràfiques de kfold ens referim a aquest conjunt com a validation.
 Agafem el model i amb una versió modificada de la funció test li passem les dades. Ens retornarà (realment ho guarda) tant la loss com els outputs del model. Amb aquests outputs podrem calcular l'accuracy.
 
-Ara veurem una taula per encoder i lstm on trobem els resultats delsmillor model per cada una de les divisions. En aquesta taula trobem la divisio a la que pertanyen, la loss en train i validation, l'accuracy i si el model es troba esbiaixat cap a una de les classes, és a dir, busca predir més d'una classe ignorant a l'altre.
+Ara veurem una taula per encoder i lstm on trobem els resultats delsmillor model per cada una de les divisions. En aquesta taula trobem la divisió a la que pertanyen, la loss en train i validation, l'accuracy i si el model es troba esbiaixat cap a una de les classes, és a dir, busca predir més d'una classe ignorant a l'altre.
 Considerem que un model està esbiaixat si la diferència entre els accuracys específics per cada classe és més gran de 0,05.
 
 
@@ -255,7 +255,7 @@ Considerem que un model està esbiaixat si la diferència entre els accuracys es
 | Recording |  0.4890 | 0.3441 | 0.810 | No |
 | Pacient   |  0.6286 | 0.1890 | 0.822 | No |
 
-Podem observar d'aquesta taula vàries coses. La primera és que cap model es troba segat, de fet la diferència màxima es del 0.003. També podem veure que obtenim els millors resultats amb la divisió window. Això era d'esperar ja que és la generalització més gran. Ca nivell de generalització té dades més diferents. Tot a això, trobem un clar outlier amb la divisió d'interval. Que en comptes de tenir un valor semblant al de recording té un valor més baix que aquest i que el de pacient. Això es deu segurament a què hi ha hagut més overfiting en aquesta divisió. Ho sabem perquè és on tenim la diferència més gran entre train loss i validation loss.
+Podem observar d'aquesta taula vàries coses. La primera és que cap model es troba segat, de fet la diferència màxima és del 0.003. També podem veure que obtenim els millors resultats amb la divisió window. Això era d'esperar ja que és la generalització més gran. Ca nivell de generalització té dades més diferents. Tot a això, trobem un clar outlier amb la divisió d'interval. Que en comptes de tenir un valor semblant al de recording té un valor més baix que aquest i que el de pacient. Això es deu segurament a què hi ha hagut més overfiting en aquesta divisió. Ho sabem perquè és on tenim la diferència més gran entre train loss i validation loss.
 Deixant interval de banda veiem que tenim molt bons resultats.
 
 #### Resultats LSTM millor Model 
@@ -267,10 +267,10 @@ Deixant interval de banda veiem que tenim molt bons resultats.
 | Recording |  0.6749 | 0.6515 | 0.650 | No |
 | Pacient   |  0.7093 | 0.5138 | 0.690 | No |
 
-Podem veure com igual queen el model anterior no trobem que estigui sesgat.
-Tmbe veiem que en Window, Recording i Pacient segueix el  matreix patro que abans. Tenim els mateixos valors pero per sota. En canvi, en interval pasa el contrari, tenim un valor d'accuracy molt elevat. Podem veure que justament pasa el contrari en els seues valors de train loss i validation loss. No trobem res de overfiting. De fet pese al pitjor resultat en accuracy, trobem molt menys overfiting en el lstm que en el encoder.
+Podem veure com igual que en el model anterior no trobem que estigui esbiaixat.
+També veiem que en Window, Recording i Pacient segueix el mateix patró que abans. Tenim els mateixos valors però per sota. En canvi, en interval passa el contrari, tenim un valor d'accuracy molt elevat. Podem veure que justament pasa el contrari en els seues valors de train loss i validation loss. No trobem res de overfiting. De fet, fins i tot en el pitjor resultat en accuracy, trobem molt menys overfiting en el lstm que en el encoder.
 
-Creiem que això no es deu al lstm com a tal sino al fet de que l'em aturat abasn de que fes overfiting (amb menys epoques), i que amb mes epoques no hagues millorat els seus resultats a diferencia de l'autoencoder.
+Creiem que això no es deu al lstm com a tal sinó al fet que l'hem aturat abans que fes overfiting (amb menys èpoques), i que amb més èpoques no hagués millorat els seus resultats a diferència de l'autoencoder.
 
 ## CONCLUSIÓ
 
