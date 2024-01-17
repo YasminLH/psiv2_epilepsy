@@ -17,7 +17,7 @@ L'encoder canviarà l'embedding de característiques del senyal rebut per poder 
 
 En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg termini, ja que les RNN tradicionals sempre tenen problemes amb el gradient amb seqüències llargues. LSTM té l’habilitat de posseir cel·les amb memòria, és a dir, cel·les que estan regulades per cel·les que controlen la informació que surt i entra, fent així que la xarxa pugui oblidar informació de poca importància i mantenint tota aquella informació que aporta i permet aprendre i millorar el model.
 
-Aixi doncs, primer de tot hem decidit usar encoders per fer la classificació de tots 4 nivells, ja que és més simple i com a primer apropament del problema, està bé, ja que pot ser molt efectiu a l'hora de la detecció de patrons complexes a les dades. Un cop realitzat aquest procés, farem el mateix pas, però amb una xarxa LSTM i en tots dos casos ens quedarem amb el model que millor accuracy tingui, ja que utilitzem el fenòmen KFold.
+Aixi doncs, primer de tot hem decidit usar encoders per fer la classificació de tots 4 nivells, ja que és més simple i com a primer apropament del problema, està bé, i pot ser molt efectiu a l'hora de la detecció de patrons complexes a les dades. Un cop realitzat aquest procés, farem el mateix pas, però amb una xarxa LSTM i en tots dos casos ens quedarem amb el model que millor accuracy tingui, ja que utilitzem el fenòmen KFold.
 
 
 
@@ -56,10 +56,12 @@ El GitHub l'hem distribuït de la següent manera:
     
 ### DATALOADER:
 
-Per carregar les nostres dades utlitzem un document que podem carregar en un data frame on estan continguts totes les metadades del difernts pacients i arxius que ens diuen quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model. 
+
+----- EXPLIACION ADAN----------------------
+Per carregar les nostres dades utlitzem un document que podem carregar en un dataframe on estan continguts totes les metadades del difernts pacients i arxius que ens diuen quina és les finestres que conten un atac epilepsia i quines no. Amb aquest arxiu fem el dataloader balnçajat agant la mateixa quantitat de finestres per les dues classes. Per tan aqui ja dividim entre train i test les diferents metades de manera balancejada fent aixì que ara amb el aquest contingut podem carregar les dades directament en el nostre model depent de on estan guardat les diferetns metades. Aixì no necesstiem carregar les dades que tenen un magnitud molt gran sino que amb les metadades al entrenar ja podem carragar-les directament en el model per ser entreant. Aquestes finetre estan guardades en parquets que es carregaran per er entreants en el model. 
 Seguint el que hem dit anteriorment del dataloader hem fet dos dataloaders que un consisteix en separar per finestres sense agruparles per pacient per entreanr el nostre model és a dir que a qui pertany les finestres no té importancia. Per cada classe hi ha 2000 finestres. En canvi l'altre dataloader entrena per pacient per tan per cada pacient agrupem les seves finestres correponents on hi han atacs o no d'epilepsia i fem l'entrenament tenint en compte aquesta agrupació per entreanar el nostre model. Per cada pacient s'afageix la mateixa quantitat de finestres que siguin atac i que no ho siguin per aixì sigui un dataloader balancejat. De cada classe hi ha 450 finestres. 
 
------ que pasa en la separacion de interva?
+------ DANIEL YA LO EPXLCIARÁS TU MEJR CON LA SEPARACION WINSOW, PACIENT RECORIDING, INTERVAL--------
 
 
 ### XARXA NEURONAL: ENCODER I LSTM
@@ -121,21 +123,22 @@ Fully connected
     Dropout - (0.5),  
     Linear - (256, 2)
 
+
+
 #### Paràmetres
 
-    Els paràmetres utilitzats per tal d'arribra a un resultat robust i coherent han estat els següents:
+Els paràmetres utilitzats per tal d'arribar a un resultat robust i coherent han estat els següents:
         
-    Èpoques: 30
+    Èpoques: depèn del nivell i divisió, "s'explica més endavant"
     Optmimizer: Adamax
     lr: 0'001
     Criterion: BCEWithLogitsLoss
     dropout = 0.5
 
+BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binaria entre les probabilitats d'entrada i de la sortida.
 
-- BCEWithLogitsLoss: Aquesta pèrdua combina una capa sigmoide i la BCELoss en una sola classe. Aquesta versió és més estable numèricament que utilitzar un sigmoide senzill seguit d'un BCELoss ja que, combinant les operacions en una sola capa, aprofitem el truc log-sum-exp per a l'estabilitat numèrica. El BCELoss és una mesura que l'entropia creuada binaria entre les probabilitats d'entrada i de la sortida.
 
 
-### poner las otras versiones por paciente 
 ### LSTM
 
 Una LSTM com a classificador té la capacitat de procesar seqüencies, aprendre dependències a llarg termini i generar una representació interna de les dades que permet realitzar tasques de clasificació on hi ha present patrons seqüencials en les dades d'entrada. Això fa que sigui de gran utilitat en el nostre cas on analitzem conjunt de dades que tracten sobre la visualització durant hores de senyals del servei on l'impuls actual depent de l'impuls anterior. Si hi ha alguna seqüència o patró alhora d'obtenir l'atac el detectarem amb LSTM. 
@@ -150,7 +153,9 @@ La xarxa conte la següent estructura:
 
 ## CODI:
 Per executar els diferents casos, tenim opcions que comentem i descomentem, és a dir, si vols que s'executi el LSTM amb el nivell recording, deixas decomnetat la "tipus" LSTM i la "divisio" recoring.
+
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/8054e2fa-9e75-4862-8694-18a23ff47319)
+
 Això sí sempre tenint en compte, que per cada cas té un número òptim d'èpoques i això s'ha de respectar, per tant, es canvia també el número d'èpoques.
 - encoder window --> 30 epocas 
 - encoder interval -->10 epocas 
