@@ -3,22 +3,16 @@
 
 ## INTRODUCCIÓ
 
-Analitzarem diferents senyals cerebrals, per tal d'entrenar un model d'intel·ligència artificial que pugui detectar si, una persona està patint o no un atac d'epilèpsia, per tal de poder classificar quan una persona rep o no un atac s'utilitzaran 4 nivells: les finestres com a nivell més baix, els intervals, recordings i pacients respectivament.
+Analitzarem diferents senyals cerebrals, per tal d'entrenar un model d'intel·ligència artificial que pugui detectar si una persona està patint o no un atac d'epilèpsia. Per tal de poder classificar quan una persona rep o no un atac s'utilitzaran 4 nivells: les finestres com a nivell més baix, els intervals, recordings i pacients respectivament.
 
-Les finestres són un grup de mostres de senyals en el temps d'un pacient en concret, i estan etiquetades amb "no té epilèpsia" i "té epilèpsia". Aquestes finestres etiquetades s'hauran de tractar perquè l'espai de temps que representa es pugui tractar com un únic senyal i no com un conjunt de senyals i així poder entrenar el model.
-L'ordre del senyal té importàncies, ja que un conjunt de finestres d'un mateix pacient són contínues en el mateix temps. La nostra xarxa ha d'aprendre del passat, pel fet que per una mateixa finestra té diferents senyals que tenen un ordre temporal. Un senyal del passat influeix en els senyals següents. 
+Les finestres són un grup de mostres de senyals en el temps d'un pacient en concret, i estan etiquetades amb "no té epilèpsia" i "té epilèpsia". També es troben etiquetades amb tres metadades més. A quin Interval temporal pertanyen, en quina gravació (o recording) pertanyen i de quin pacient son. Aquestes metadades són les que ens permetran fer aquests quatre nivells
+Cada nivell és més genèric que l'anterior. És a dir el primer grup de Finestres que podem fer és Finestres que pertanyen al mateix Interval. Un Interval és un conjunt de Finestres que es troben en el mateix temps. Un recording és un grup de intervals (o un sol) que pertany a una gravació. Un pacient pot tenir vàries gravacions o recordings de dies diferents.
 
-Els intervals és un nivell una mica més genèric, en el que és té un altre enfoc, ja que cada interval és un conjunt de finestres que estan enregistrades en diferents moments, però el mateix dia. 
-En canvi el nivell recording és el mateix que l'interval, però en diferents dies. 
-Per útlim, tenim els pacients que és el nivell més genèric que hi ha, i que consisteix en tractar tots els recordings d'un pacient a la vegada. 
+Procedimentalment, hem decidit tenir dos enfocs, el de l'encoder i l'LSTM. L'encoder canviarà l'embedding de característiques del senyal rebut per poder extreure les característiques d'una manera en la qual siguin més fàcils de classificar i poder diferenciar entre les diferents classes que rep el model.
 
-Procedimentalment, hem decidit tenir dos enfocs, el de l'encoder i l'LSTM.
-L'encoder canviarà l'embedding de característiques del senyal rebut per poder extreure les característiques d'una manera en la qual siguin més fàcils de classificar i poder diferenciar entre les diferents classes que rep el model.
+En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg termini, ja que les RNN tradicionals sempre tenen problemes amb el gradient amb seqüències llargues. LSTM té l'habilitat de posseir cel·les amb memòria, és a dir, cel·les que estan regulades per cel·les que controlen la informació que surt i entra, fent així que la xarxa pugui oblidar informació de poca importància i mantenint tota aquella informació que aporta i permet aprendre i millorar el model.
 
-En canvi, la LSTM és un tipus de RNN, amb la capacitat recordar patrons a llarg termini, ja que les RNN tradicionals sempre tenen problemes amb el gradient amb seqüències llargues. LSTM té l’habilitat de posseir cel·les amb memòria, és a dir, cel·les que estan regulades per cel·les que controlen la informació que surt i entra, fent així que la xarxa pugui oblidar informació de poca importància i mantenint tota aquella informació que aporta i permet aprendre i millorar el model.
-
-Aixi doncs, primer de tot hem decidit usar encoders per fer la classificació de tots 4 nivells, ja que és més simple i com a primer apropament del problema, està bé, i pot ser molt efectiu a l'hora de la detecció de patrons complexes a les dades. Un cop realitzat aquest procés, farem el mateix pas, però amb una xarxa LSTM i en tots dos casos ens quedarem amb el model que millor accuracy tingui, ja que utilitzem el fenòmen KFold.
-
+Així doncs, primer de tot hem decidit usar encoders per fer la classificació de tots 4 nivells, ja que és més simple i com a primer apropament del problema, està bé, i pot ser molt efectiu a l'hora de la detecció de patrons complexos a les dades. Un cop realitzat aquest procés, farem el mateix pas, però amb una xarxa LSTM i en tots dos casos ens quedarem amb el model que generalitzi millor, ja que utilitzem el fenomen KFold.
 
 
 ## OBJECTIUS
