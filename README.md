@@ -84,6 +84,8 @@ Totes per això tenen un element en comú, el tractament arxiu a arxiu amb un bu
 
 Amb aquesta forma de dividir aconseguim solucionar els problemes de desbalanceig mencionats en la introducció. Sent la més perillosa i que hem evitat el fet d'estar desbalancejat en el conjunt d'entrenament en quant a les classes. Això hagués pogut portar a que els nostres models es centressin a predir més d'una classe que de l'altre.
 
+A partir d'ara ens referirem al conjunt de Xtest i Ytest com a conjunt de validation. Això ho fem així per evitar confusions posteriorment.
+
 ### XARXA NEURONAL: ENCODER I LSTM
 
 Ens hem basat en la següent estructura per fer la xarxa neuronal.
@@ -237,20 +239,30 @@ Els millors resultats són els que s'han vist anteriorment, és a dir el que fa 
 
 ### Resultats Millor Model
 
-Un cop hem vist quin dels models es mes eficient, toca provar-lo amb el cunjunt de validation. Aquest es tracta del cunjunt de dades que habiem anomenat com a test en la part de 
+Un cop hem vist quin dels models es mes eficient, toca provar-lo amb el cunjunt de validation. Aquest es tracta del cunjunt de dades que habiem anomenat com a Xtest i Ytest en la part de dataloading. Per evitar confusions amb les grafiques de kfold ens referim a aquest conjunt com a validation.
+Agafem el model i amb una versio modificada de la funció test li passem les dades. Ens retornara (realment ho guarda) tant la loss com els outputs del model. Amb aquets outputs podrem calcular el accuracy.
+
+Ara veurem una taula per encoder i lstm on trobem els resultats dels millors model per cada una de les divisions. En aquesta taula trobem la diviso a la que pertanyen, la loss en train i validation, el accuracy i si el model es troba sesgat cap a una de les classes, es a dir, busca predir mes de una classe ignorant a l'altre.
+Considerem que un model esta sesgat si la differencia entre els accuracys especicifics per cada classe es mes gran de 0,05. 
 
 
 #### Resultats Encoder millor Model 
 
 | Divisó  | Validation loss | Train loss  | Accuracy  | Sesgat |
-| ------------- | ------------- | ------------- | ------------- | ------------- |
-| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
- | Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| --------- | ------- | ------ | ----- | -- |
+| Window    |  0.2414 | 0.0558 | 0.935 | No |
+| Interval  |  0.8197 | 0.2919 | 0.707 | No |
+| Recording |  0.4890 | 0.3441 | 0.810 | No |
+| Pacient   |  0.6286 | 0.1890 | 0.822 | No |
   
 #### Resultats LSTM millor Model 
 
+| Divisó  | Validation loss | Train loss  | Accuracy  | Sesgat |
+| --------- | ------- | ------ | ----- | -- |
+| Window    |  0.6254 | 0.5509 | 0.713 | No |
+| Interval  |  0.4949 | 0.4798 | 0.801 | No |
+| Recording |  0.6749 | 0.6515 | 0.650 | No |
+| Pacient   |  0.7093 | 0.5138 | 0.690 | No |
 
 
 
