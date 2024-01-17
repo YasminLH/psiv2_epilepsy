@@ -175,11 +175,10 @@ La xarxa LSTM contè la següent estructura:
     - Linear - (hidden = 20, output = 2)
 
 
-La LSTM consta de dues capes de LSTM per aprendre patrons en les seqüències de dades que rep, per reduir el overfiting del nostre model hem fet dropout i hem aplicat batch normalization i així obtenir un millors resultats del nostre model. Per donar la sortida del LSTM hi ha per últim una capa linear que ens dona la classificació binara per saber si la persona té un atac d'epilèpsia o no
-El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
+Consta de dues capes de LSTM per aprendre patrons en les seqüències de dades que rep, seguides d'un Dropout i Batch Normalization, per reduir l'overfiting del nostre model i generalitzar al màxim, i així obtenir uns millors resultats del nostre model. El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant les activacions a cada capa.
+Finalment, tenim una capa fully connected "Linear" que s'encarrega de la classificació binària, per saber si la persona té un atac d'epilèpsia o no.
 
-La mètrica per avaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia. 
-
+La mètrica per avaluar el rendiment del model, és la precisió, ja que és la mètrica òptima i correcte en aquest context mèdic de classificació de pacients per epilèpsia.
 
 ## ÈPOQUES:
 Per cada cas, tenim un número òptim d'èpoques, ja que per cada nivell i/o divisió cal una precisió o una altra. 
