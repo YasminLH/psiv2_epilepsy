@@ -194,14 +194,26 @@ Utilizem les gràfiques de loss de train i test, per triar el millor model dels 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/c39149c5-110f-4ae6-84df-90d18428cc06)
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/3c08595d-ef69-4d58-8152-61ab76789722)
 
-
-Podem veure que entre tots 4 models el que millor generalitza, evita l'overfitting, aprén de manera correcta i adequada i segueix la tendència òptima la loss tant de train com de test, és el model 0.
+Podem veure que entre tots 4 models, destaca clarament el model 0 com a més eficient en generalització i que resisteix l'overfitting. Aquest model aprèn de manera precisa, robusta, adequada i correcte capturant la complexitat de les dades, però sense desviar-se de la tendència òptima de la loss tant de train com de test.
 
 
 #### LSTM 
 
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/0c0a53bf-5ad8-45c0-9f80-9de2e4cbb425)
 
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/b57bf14c-dba2-4b8b-8b68-91b121240e43)
 
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/1b7e41a1-93f2-4f3b-b5e8-f48bc677348a)
+
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/63e0e802-66df-460f-a698-02616bc0d3a1)
+
+Podem veure que entre tots 4 models, destaca clarament el model 3 com a més eficient en generalització i que resisteix l'overfitting. Aquest model a diferència dels altres aprèn de manera adequada, però a causa de les poques dades de test que tenim sembla que no aprèn de manera precisa i es queda més o menys estable quan arriba a l'època 10, ja que no té res més que aprendre.     
+Segueix la més o menys la tendència òptima de la loss tant de train com de test.
+
+Com a resultat final podem veure comparant les losses que la xarxa neuronal Encoder, va millor que la del LSTM, això podria ser que l'LSTM no estigui explotant de manera òptima  les relacions temporals de les dades o que tingui una arquitectura molt més complexa i fa que li costi més aprendre de manera molt més precisa els patrons locals. 
+Per exemple l'encoder té capes específiques que aprenen patrons locals i capes que disminueixen la dimensionalitat, per tal de eliminar la complexitat i deixar només aquelles característiques més importants.
+
+** Les altres losses del nivells recording, interval i pacient estan a la carpeta losses. 
 
 ### Resultats Encoder millor Model 
 
