@@ -33,16 +33,23 @@ La base de dades consisteix en 24 pacients on per cadascun hi ha diverses hores 
 Normalment, els senyals es registren utilitzant elèctrodes col·locats al cuir cabellut. Cada pacient té el format d'emmagatzematge Parquet, que és un format de fitxer d'emmagatzematge columnar altament optimitzat per usar-se amb marcs de processament de dades massives. Es fa servir habitualment en el context de l'emmagatzematge i el processament eficient de conjunts de dades grans.
 
 Aquesta base de dades es troba de la següent manera:
+
 -24 arxius en format .npz, un per cada pacient, que contenen les dades de les pròpies senyals. Cada arxiu és per tant un array amb format (numero de finestres, canals, temps). El nombre de finestres varia per cada pacient. Cada finestra té 21 canals i cada finestra està dividida en trossets de 128 temporalment. Cada finestra correspon a un segon de recording. Per tant, tenim les finestres dividides en 21 canals i 1/128 segons.
+
 -24 arxius en fomat .parquet, un per cada pacient, que contenen les metadades de cada una de les finestres. Cada arxiu es tracta per tant d'un Dataframe on cada fila representa una finestra. Conte la classe, l'interval, el recording i el pacient al qual pertany cada finestra.
 Els dos arxius es troben relacionat pel propi índex. És a dir, la primera entrada de l'array coincideix amb la primera entrada del Dataframe.
 
 En total tenim 571905 finestres. Aquest és un nombre molt elevat de dades i si volguéssim utilitzar-les totes necessitaríem 200 GB de memòria ram aproximadament.
 Aquestes finestres no es troben balancejades en cap de les formes. És a dir:
+
 -Hi ha més dades negatives, sense epilèpsia, que positives. Un 84% de les dades són negatives.
+
 -Els pacients no tenen tots el mateix nombre de recordings.
+
 -Els pacients no tenen tots el mateix nombre d'intervals.
+
 -Els intervals no tenen tots el mateix nombre de finestres.
+
 -La distribució de les classes és diferent per cada una de les divisions. En un interval podem trobar un 90% de dades negatives i en un altre un 70%.
 
 To això fa que es necessiti fer un tractament de les dades important abans que entrin al model. Parlarem en més detall *(nose)* en un altre apartat però bàsicament per evitar problemes:
