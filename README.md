@@ -168,14 +168,13 @@ Una LSTM com a classificador té la capacitat de processar seqüències, aprendr
 
 La xarxa LSTM conte la següent estructura:
 
-    Input_dim = 21
-    Hidden_dim =  20
-    Output_dim = 2
-    Num_layers = 2
-    Batch_size = 3
-    Droput = 0.5
-    Batch Normalization 
-    Capa Linear
+    - LTM - (input = 21,hidden =  20, output =2)
+    - LTM - (input = 21,hidden =  20, output =2)
+    - Dropout - (0.5) 
+    - Batch Normalization - (hidden = 20, output = 2)
+    - Linear - (Num features = 20)
+
+
 
 La raó de l'utilització del Dropout i el Batch normalization, és per prevenir l'overfitting i millorar la generalització del model.
 El Dropout a 0.5, el que fa és inhibir a la meitat de les neurones a l'hora de l'entrenament i el batch normalization, s'encarrega d'estabilitzar i accelerar l'entrenament, normalitzant  les activacions a cada capa.
