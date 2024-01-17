@@ -178,15 +178,21 @@ Per anar canviant de nivell o divisió, comentem o descomentem les línies que e
 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/8054e2fa-9e75-4862-8694-18a23ff47319)
 
-  
+
+## LOSS
+Utilizem la BCEWithLogitsLoss, per calcular les discrepàncies entre les prediccions del model i les etiquetes reals i  obtenim la loss, específicament una loss per les dades train i una loss per les dades test. Això ho guardem en un objecte pickle, per tal de poder manipular més endavant com vulguem. El codi on generem els gràfics pertinents està al fitxer "pickle.py". Aquestes gràfiques ens serveixen per monitorar i veure quins dels models que hem generat ens va millor, generalitza més i evitar l'overfitting. 
+
 ## RESULTATS
 
-Com que utiltzem un KFold, per triar el millor model, mirem la corba de loss tant de train com de test. 
+### Resultats Loss
+Utilizem les gràfiques de loss de train i test, per triar el millor model dels que ha generat KFold i hem entrenat.      
 
-### Resultats Encoder KFOLD
+#### Encoder 
 
 
-### Resultats LSTM KFOLD
+
+
+#### LSTM 
 
 
 ### Resultats Encoder millor Model 
