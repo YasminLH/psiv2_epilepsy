@@ -192,13 +192,15 @@ Utilizem les gràfiques de loss de train i test, per triar el millor model dels 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/ccfb0cc8-8eb9-4a50-bba7-9b21c7ddd5b0)
 
 ![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/c39149c5-110f-4ae6-84df-90d18428cc06)
-![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/292ef811-d97b-49c6-a27c-1184529367d1)
+![image](https://github.com/YasminLH/psiv2_epilepsy/assets/101893393/3c08595d-ef69-4d58-8152-61ab76789722)
 
 
 Podem veure que entre tots 4 models el que millor generalitza, evita l'overfitting, aprén de manera correcta i adequada i segueix la tendència òptima la loss tant de train com de test, és el model 0.
 
 
 #### LSTM 
+
+
 
 
 ### Resultats Encoder millor Model 
