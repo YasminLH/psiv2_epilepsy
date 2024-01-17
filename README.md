@@ -277,9 +277,8 @@ Creiem que això no es deu al lstm com a tal sino al fet de que l'em aturat abas
 En quant als objectius podem dir que hem aconseguit evitar els problemes que poguessin haguer vingut de una base de dades desbalancejada ja que els nostres models no es toben esbiaixats.
 Hem pogut utilitzar el mecanisme kfold per generar un model optim.
 Nose help plis 
-hem pogut agafar el optim optim tot. k fold
-bons resultats
+Hem obtingut bons resultats
 lstm es no tan bo com encoder
 (creiem que te dos motius possibles)
-patilleada de interval i recording.
+
 
